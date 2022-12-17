@@ -1,16 +1,17 @@
 import React from "react";
-
+import Navbar from "../components/navbar/NavbarTop";
 const Aitee = () => {
     return (
-        <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '90vh'
-        }}
-        >
-            <h1>Aitee</h1>
-        </div>
+        <Navbar/>
+        // <div style={{
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     height: '90vh'
+        // }}
+        // >
+        //     <h1>AMKSDFBHJKAJKFASD</h1>
+        // </div>
     );
 };
 
