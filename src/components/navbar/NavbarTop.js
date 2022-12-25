@@ -1,40 +1,25 @@
 import React from "react";
-import {
-    Nav,
-    NavLink,
-    Bars,
-    NavMenu,
-    NavButton,
-    NavButtonLink
-} from './navbarElements'
+import './navbar.css';
 
 const Navbar = () => {
     return (
         <>
-            <Nav>
-                <NavLink to="/">
+            <div class="Nav">
+                <div class="NavLink">
                     <img src={require('../../images/templogo1.png')} alt="" />
-                </NavLink>
+                </div>
 
-                <Bars />
-                <NavMenu>
-                    <NavLink to="/" activeStyle>
-                        home
-                    </NavLink>
-                    <NavLink to="/aitee" activeStyle>
-                        aitee
-                    </NavLink>
-                    <NavLink to="/profile" activeStyle>
-                        profile
-                    </NavLink>
-                    <NavLink to="/signup" activeStyle>
-                        sign up
-                    </NavLink>
-                </NavMenu>
-                <NavButton>
-                    <NavButtonLink to='/signin'>sign in</NavButtonLink>
-                </NavButton>
-            </Nav>
+                <div class="Bars" />
+                <div class="NavMenu">
+                    <a class="NavLink" href='/'>home</a>
+                    <a class="NavLink" href='/aitee'>aitee</a>
+                    <a class="NavLink" href='/profile'>profile</a>
+                    <a class="NavLink" href='/signup'>sign up</a>
+                </div>
+                <div class="NavButton">
+                    <a class='NavButtonLink' href='/signin'>sign in</a>
+                </div>
+            </div>
         </>
     );
 

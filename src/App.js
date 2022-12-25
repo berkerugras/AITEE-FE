@@ -7,7 +7,6 @@ import Aitee from './pages/aitee';
 function App() {
   return (
     <div>
-
       <div>
         MKANDFKGJLADFJKGJKLADFGNJKADFKGADFHJKGADFHJGJADFHJKGAFD
       </div>
