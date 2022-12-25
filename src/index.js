@@ -1,27 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import reportWebVitals from './reportWebVitals';
+import styled from "styled-components";
+import Background from "./components/background";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Aitee from './pages/aitee';
 import Home from './pages/home';
 import ButtonTest from './pages/buttonTest';
 import Navbar from './components/navbar/NavbarTop';
+import './styles/style.css';
 export default function App() {
   return (
-    <>   
-    <BrowserRouter>
-      <Routes>
-        <Route path="/aitee" element={<Aitee />}>
-          <Route index element={<Aitee />} />         
-        </Route>
-        <Route path="/" element={<Home />}>
-          <Route index element={<Home />} />          
-        </Route>
-        <Route path="/buttontest" element={<ButtonTest />}>
-          <Route index element={<ButtonTest />} />          
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <Navbar></Navbar>
+      <Background />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/aitee" element={<Aitee />}>
+            <Route index element={<Aitee />} />
+          </Route>
+          <Route path="/" element={<Home />}>
+            <Route index element={<Home />} />
+          </Route>
+          <Route path="/buttontest" element={<ButtonTest />}>
+            <Route index element={<ButtonTest />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import TDModel from '../3dmodel';
+import Tee from '../3dmodel/test';
 
 const Home = () => {
     return (
@@ -7,12 +7,14 @@ const Home = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '90vh'
+            height: '90vh',
+            paddingTop: '10vh'
         }}
         >
-            <h1>AAAAAAAAAAAAAAAAAAAAAA</h1>
+            <Tee></Tee>
         </div>
     );
 };
+
 
 export default Home;

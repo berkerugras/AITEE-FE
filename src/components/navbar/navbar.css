@@ -1,0 +1,83 @@
+.Nav {
+    background: #000;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem calc((100vw - 1000px) / 2);
+    z-index: 10;
+}
+
+.NavLink {
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 1rem;
+    height: 100%;
+    cursor: pointer;
+}
+
+.NavLink:active {
+    color: #558fca;
+}
+
+
+
+.Bars {
+    display: none;
+    color: #fff;
+
+    @media screen and (max-width: 768px) {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(-100%, 75%);
+        font-size: 1.8rem;
+        cursor: pointer;
+    }
+}
+
+.NavMenu {
+    display: flex;
+    align-items: center;
+    margin-right: -24px;
+
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+}
+
+
+.NavButton {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+
+}
+
+
+.NavButtonLink {
+    border-radius: 4px;
+    background: #2800ac;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 10px 22px;
+    color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+
+.NavButtonLink:hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color: #010606;
+}
