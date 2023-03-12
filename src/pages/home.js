@@ -1,5 +1,6 @@
 import React from 'react';
-import Tee from '../3dmodel/test';
+import Tee from '../3dmodel/Tee';
+import Teem from '../3dmodel/Tees';
 
 const Home = () => {
     return (
@@ -11,7 +12,8 @@ const Home = () => {
             paddingTop: '10vh'
         }}
         >
-            <Tee></Tee>
+            {/* <Tee></Tee> */}
+            <Teem></Teem>
         </div>
     );
 };

@@ -1,3 +1,100 @@
+@import url(https://fonts.googleapis.com/css?family=Lato);
+@import url(https://fonts.googleapis.com/css?family=Oswald);
+@import url(https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css);
+
+@font-face {
+    font-family: MainFont;
+    src: url(../../public/AvenirLTPro-Roman.ttf);
+}
+
 * {
     margin: 0;
+}
+
+body {
+    background-image: url('../images/bg.jfif');
+    background-repeat: repeat !important;
+    ;
+}
+
+.about-container {
+    width: 80rem;
+    height: 100%;
+    margin: 2rem;
+    padding: 2rem;
+    background-color: #ffffff;
+    border: 2px solid #2fedd4;
+    color: #6e6e73;
+    font-family: 'MainFont';
+    text-align: center
+}
+
+.about-card {
+    font-family: 'Lato', Arial, sans-serif;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    margin: 10px;
+    min-width: 250px;
+    max-width: 310px;
+    height: 300px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #2B2B2B;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+
+.about-card * {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.about-card .profile-image {
+    padding: 15% 10% 0;
+}
+
+.about-card .profile-image img {
+    max-width: 100%;
+    vertical-align: top;
+    position: relative;
+    border-radius: 50%;
+    max-width: 40%;
+}
+
+.about-card figcaption {
+    padding: 5% 10% 15%;
+}
+
+.about-card h3 {
+    font-family: 'Oswald';
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    margin: 3px 0;
+}
+
+.about-card h5 {
+    font-weight: 400;
+    margin: 0;
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 1px;
+}
+
+.about-card .icons i {
+    color: #999;
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 1.5em;
+}
+
+.about-card .icons i:hover {
+    color: #555;
+}
+
+.about-card .icons i a {
+    text-decoration: none;
 }

@@ -12,7 +12,6 @@ export default function App() {
   return (
     <>
       <Navbar></Navbar>
-      <Background />
       <BrowserRouter>
         <Routes>
           <Route path="/aitee" element={<Aitee />}>

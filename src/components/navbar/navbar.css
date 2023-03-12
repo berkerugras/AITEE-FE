@@ -1,15 +1,21 @@
+@font-face {
+    font-family: NavFont;
+    src: url(../../../public/AvenirLTPro-Roman.ttf);
+}
+
 .Nav {
-    background: #000;
+    background: rgb(255, 255, 255);
     height: 90px;
     display: flex;
     justify-content: space-between;
     padding: 0.5rem calc((100vw - 1000px) / 2);
     z-index: 10;
+    border-bottom: 1px #000000;
 }
 
 .NavLink {
-    color: #fff;
-    font-family: 'Courier New', Courier, monospace;
+    color: #000000;
+    font-family: 'NavFont';
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -64,10 +70,10 @@
 
 .NavButtonLink {
     border-radius: 4px;
-    background: #2800ac;
-    font-family: 'Courier New', Courier, monospace;
+    background: #16193a;
+    font-family: 'NavFont';
     padding: 10px 22px;
-    color: #fff;
+    color: #2fedd4;
     border: none;
     outline: none;
     cursor: pointer;
@@ -77,7 +83,7 @@
 
 
 .NavButtonLink:hover {
-    transition: all 0.2s ease-in-out;
-    background: #fff;
+    transition: all 0.3s ease-in-out;
+    background: rgb(182, 182, 182);
     color: #010606;
 }
