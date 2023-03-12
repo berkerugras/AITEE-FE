@@ -8,6 +8,10 @@ import Home from './pages/home';
 import ButtonTest from './pages/buttonTest';
 import Navbar from './components/navbar/NavbarTop';
 import './styles/style.css';
+import ProfilePage from './pages/profilePage';
+import CartPage from './pages/cart';
+import SignupPage from './pages/signup';
+import SignInPage from './pages/signin';
 export default function App() {
   return (
     <>
@@ -22,6 +26,18 @@ export default function App() {
           </Route>
           <Route path="/buttontest" element={<ButtonTest />}>
             <Route index element={<ButtonTest />} />
+          </Route>
+          <Route path="/profile" element={<ProfilePage />}>
+            <Route index element={<ProfilePage />} />
+          </Route>
+          <Route path="/cart" element={<CartPage />}>
+            <Route index element={<CartPage />} />
+          </Route>
+          <Route path="/signup" element={<SignupPage />}>
+            <Route index element={<SignupPage />} />
+          </Route>
+          <Route path="/signin" element={<SignInPage />}>
+            <Route index element={<SignInPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
