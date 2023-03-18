@@ -21,7 +21,7 @@ const Home = () => {
         marginBottom: '2rem',
         backgroundColor: hovered ? "DeepSkyBlue" : "blue",
         padding: "1.25rem",
-        borderRadius: "1.10rem"
+        borderRadius: "1.25rem"
     };
 
     function generateImage() {
