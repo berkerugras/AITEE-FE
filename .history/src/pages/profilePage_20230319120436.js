@@ -31,8 +31,7 @@ const ProfilePage = () => {
             <Paragraph>Email: <a href="mailto:ahmetkaya@google.com">ahmetkaya@google.com</a></Paragraph>
             <Paragraph>Phone: (123) 456-7890</Paragraph>
             <div className="icons" style={{display:"flex",
-                                          justifyContent:"space-between",
-                                          width:"20%"}}>
+                                          justifyContent:"space-betweem"}}>
               <a href="https://github.com/egesevinc/"><i className="ion-social-github" style={{ fontSize: '36px' }}></i></a>
               <a href="https://www.linkedin.com/in/egesevincc"><i className="ion-social-linkedin" style={{ fontSize: '36px' }}></i></a>
               <a href="https://www.instagram.com/egessevinc/"><i className="ion-social-instagram" style={{ fontSize: '36px' }}></i></a>
