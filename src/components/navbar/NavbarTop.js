@@ -6,7 +6,7 @@ const Navbar = () => {
         <>
             <div class="Nav">
                 <div class="NavLink">
-                    <img src={require('../../images/logos/logo1.png')} alt="" />
+                    <img class="Image" src={require('../../images/logos/logo1.png')} alt="" />
                 </div>
 
                 <div class="Bars" />
