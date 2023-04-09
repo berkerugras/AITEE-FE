@@ -1,7 +1,8 @@
 import React from 'react';
 import { Button, Card, Form, Input, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const SignInPage = () => {
   const onFinish = (values) => {
@@ -15,6 +16,8 @@ const SignInPage = () => {
         <Form
           name="basic"
           onFinish={onFinish}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
         >
           <Form.Item
             label="Username"
@@ -32,12 +35,18 @@ const SignInPage = () => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+          <Form.Item wrapperCol={{ span: 16, offset: 8 }} style={{width:"100%"}}>
+            <Button type="primary" htmlType="submit" style={{ float: "right" }}>
               Sign In
             </Button>
           </Form.Item>
         </Form>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1em' }}>
+          <Text>
+            Don't have an account?&nbsp;
+            <Link to="/signup">Sign Up</Link>
+          </Text>
+        </div>
       </Card>
     </div>
   );

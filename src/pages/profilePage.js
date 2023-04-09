@@ -22,7 +22,7 @@ const ProfilePage = () => {
             </div>
           </Col>
           <Col span={18}>
-            <Title level={2}>Ahmet Kaya</Title>
+            <Title level={2}>Deneme</Title>
             <Paragraph>Web Developer</Paragraph>
             <Paragraph>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce aliquam arcu vitae lacus tristique mattis.
