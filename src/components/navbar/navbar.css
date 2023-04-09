@@ -11,6 +11,7 @@
     padding: 0.5rem calc((100vw - 1000px) / 2);
     z-index: 10;
     border-bottom: 1px #000000;
+    overflow: hidden;
 }
 
 .NavLink {
@@ -28,7 +29,13 @@
     color: #558fca;
 }
 
-
+@media screen and (max-width: 1000px) {
+.Image{
+   
+        width: 70px;
+        height: 40px;
+    }
+}
 
 .Bars {
     display: none;
@@ -46,6 +53,7 @@
 }
 
 .NavMenu {
+    overflow: hidden;
     display: flex;
     align-items: center;
     margin-right: -24px;
