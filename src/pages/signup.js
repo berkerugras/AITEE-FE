@@ -5,10 +5,22 @@ const { Text } = Typography;
 const SignupPage = () => {
   const onFinish = (values) => {
     const age = Number(values.age);
+    // history.push(`/profile?username=${username}&password=${password}`);
     console.log("Received values of form: ", values);
     console.log("Age: ", age);
   };
 
+  // const [username, setUsername] = useState('');
+  // const [password, setPassword] = useState('');
+  // const history = useHistory();
+
+  // const handleUsernameChange = (event) => {
+  //   setUsername(event.target.value);
+  // };
+
+  // const handlePasswordChange = (event) => {
+  //   setPassword(event.target.value);
+  // };
   const validateAge = (rule, value) => {
     const numValue = parseInt(value);
     if (isNaN(numValue)) {
@@ -43,7 +55,7 @@ const SignupPage = () => {
             rules={[{ required: true, message: "Please input your username!" }]}
             style={{ marginBottom: "1em" }}
           >
-            <Input />
+            <Input/>
           </Form.Item>
 
           <Form.Item
@@ -98,8 +110,8 @@ const SignupPage = () => {
         </Form>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1em' }}>
           <Text>
-            Don't have an account?&nbsp;
-            <Link to="/signup">Sign Up</Link>
+            Already have an account?&nbsp;
+            <Link to="/signin">Sign In</Link>
           </Text>
         </div>
       </Card>

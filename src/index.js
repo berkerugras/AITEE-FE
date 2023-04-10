@@ -15,18 +15,20 @@ import SignInPage from './pages/signin';
 export default function App() {
   return (
     <>
-      <Navbar></Navbar>
+      <Navbar>
+      
+      </Navbar>
       <BrowserRouter>
         <Routes>
           <Route path="/aitee" element={<Aitee />}>
             <Route index element={<Aitee />} />
           </Route>
-          <Route path="/" element={<Home />}>
+          <Route path="/" element={<SignupPage />}>
+            <Route index element={<SignupPage />} />
+          </Route>
+          <Route path="/home" element={<Home />}>
             <Route index element={<Home />} />
-          </Route>
-          <Route path="/buttontest" element={<ButtonTest />}>
-            <Route index element={<ButtonTest />} />
-          </Route>
+          </Route>        
           <Route path="/profile" element={<ProfilePage />}>
             <Route index element={<ProfilePage />} />
           </Route>
@@ -49,15 +51,3 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);
 
 
-
-// const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-//reportWebVitals();
