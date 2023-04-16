@@ -1,15 +1,12 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
-
 const Home = () => {
     const [imageUrl, setImageUrl] = useState(null);
     const [hovered, setHovered] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(null);
-    const [canvas, setCanvas] = useState('');
-    const [imgURL, setImgURL] = useState('');
-
+    const [canvasObj, setCanvas] = useState(null);
     const handleMouseEnter = () => {
         setHovered(true);
     };
@@ -49,38 +46,53 @@ const Home = () => {
             })
     }
 
-    const initCanvas = () => (
-        new fabric.Canvas('canvas', {
-            height: 500,
-            width: 500,
-            backgroundColor: 'transparent'
-        })
-        // new fabric.Image.fromURL('/public/black_tshirt.png', img => {
-        //     img.scale(0.75);
-        //     canvas.add(img);
-        //     canvas.renderAll();
-        //     setImgURL('/public/black_tshirt.png');
-        // })
 
-    );
 
     useEffect(() => generateImage(), []);
-    useEffect(() => setCanvas(initCanvas()), []);
+    
+    useEffect(() => {
+        // create a new Fabric.js canvas instance when the component mounts
+        const canvas = new fabric.Canvas("canvas", {
+          width: 500,
+          height: 500
+        });
+    
+        // create a Fabric.js image object with the T-shirt image source
+        new fabric.Image.fromURL('/black_tshirt.png', img => {
+          img.set({
+            selectable:false,
+            evented:false,
+            scaleX: 0.5,
+            scaleY: 0.5
+          });
+          canvas.add(img);
+          setCanvas(canvas);
 
+        });
 
-    const addImg = (e, canvi) => {
-        e.preventDefault();
+    
+      }, []);
+
+      const addImgOnTshirt = () => {
         new fabric.Image.fromURL(imageUrl, img => {
-            img.scale(0.75);
-            canvi.add(img);
-            canvi.renderAll();
-            setImgURL('');
+            img.set({
+
+                scaleX: 0.3,
+                scaleY: 0.3
+              });
+            if(canvasObj.getObjects().length>1){
+                canvasObj.remove(canvasObj.item(1));
+            }
+            canvasObj.add(img);
+            canvasObj.centerObject(img);
+
+            canvasObj.renderAll();
         });
     }
 
-    function a(e,canvi){
+    function generateAndAddImage(){
         generateImage();
-        addImg(e,canvi);
+        addImgOnTshirt();
     }
 
     return (
@@ -94,22 +106,14 @@ const Home = () => {
         }}
         >
 
-
-
+            <canvas id="canvas" />
             <button style={styleButton}
-                onClick={e=>a(e,canvas)}
+                onClick={generateAndAddImage}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 hidden={isFetching}>
                 <span style={{ color: "white" }}>Get new Image</span>
             </button>
-            <canvas id="canvas" />
-            <div style={{ height: '20vh' }}>
-
-                {isLoading && !imageUrl ? (<p>Loading...</p>) :
-                    (<img src={imageUrl} alt="Generated" />)
-                }
-            </div>
         </div>
 
     );
