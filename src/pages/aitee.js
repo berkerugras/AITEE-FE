@@ -1,5 +1,4 @@
 import React from "react";
-import Model from "../3dmodel/Tees";
 
 
 const Aitee = () => {
