@@ -12,6 +12,8 @@ import ProfilePage from './pages/profilePage';
 import CartPage from './pages/cart';
 import SignupPage from './pages/signup';
 import SignInPage from './pages/signin';
+import Marketplace from './pages/marketplace';
+import ThemeButtons from './components/ThemeButtons';
 export default function App() {
   return (
     <>
@@ -40,6 +42,9 @@ export default function App() {
           </Route>
           <Route path="/signin" element={<SignInPage />}>
             <Route index element={<SignInPage />} />
+          </Route>
+          <Route path="/market" element={<Marketplace />}>
+            <Route index element={<Marketplace />} />
           </Route>
         </Routes>
       </BrowserRouter>

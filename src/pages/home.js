@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { fabric } from 'fabric';
+import ThemeButtons from '../components/ThemeButtons';
 
 const Home = () => {
     const [imageUrl, setImageUrl] = useState(null);
@@ -93,9 +94,7 @@ const Home = () => {
             paddingTop: '10vh',
         }}
         >
-
-
-
+            <ThemeButtons></ThemeButtons>
             <button style={styleButton}
                 onClick={e=>a(e,canvas)}
                 onMouseEnter={handleMouseEnter}
@@ -103,6 +102,7 @@ const Home = () => {
                 hidden={isFetching}>
                 <span style={{ color: "white" }}>Get new Image</span>
             </button>
+            
             <canvas id="canvas" />
             <div style={{ height: '20vh' }}>
 

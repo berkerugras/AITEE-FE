@@ -18,6 +18,7 @@ const Navbar = () => {
                
                 <div class="NavButton">
                     <a class='NavButtonLink' href='/cart'>Checkout</a>
+                    <a class='NavButtonLink' href='/market' style={{marginLeft:'5%'}}>Marketplace</a>
                 </div>
             </div>
         </>
