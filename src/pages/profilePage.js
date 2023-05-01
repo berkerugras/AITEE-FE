@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, Card, Col, Divider, Grid, Row, Typography } from 'antd';
 import { GithubOutlined, LinkedinOutlined, InstagramOutlined } from '@ant-design/icons';
-
+import { useSelector } from 'react-redux';
 const { Title, Paragraph } = Typography;
 const { useBreakpoint } = Grid;
 
@@ -9,9 +9,13 @@ const ProfilePage = () => {
   const screens = useBreakpoint();
   const isSmallScreen = screens.xs || screens.sm;
   const gridLayout = isSmallScreen ? { span: 24 } : { span: 12, offset: 2 };
-
+  const users = useSelector( (state) => state.users);
+  console.log(users);
   return (
     <h1>SA</h1>
+   
+
+
     // <div>
     //   <Card style={{ width: '100%' }}>
     //     <Row gutter={[16, 16]} align="middle">
