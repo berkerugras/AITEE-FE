@@ -15,7 +15,16 @@ export const getPosts = async (req, res) => {
     }
 }
 
-export const createUser = (req, res) => {
+export const createUser = async (req, res) => {
+    const user = req.body;
+
+    const newUser = PostMessage(user);
+    try {
+        await newUser.save();
+        
+    } catch (error) {
+        
+    }
     res.send('create');
 }
 
