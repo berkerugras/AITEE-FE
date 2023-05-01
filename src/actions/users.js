@@ -1,4 +1,4 @@
-import * as api from "./api";
+import * as api from "../api";
 
 export const getUsers = () => async (dispatch) => {
   try {
@@ -10,5 +10,5 @@ export const getUsers = () => async (dispatch) => {
     console.log(error.message)
   }
 
-  
+
 };
