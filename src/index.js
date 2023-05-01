@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
 import styled from "styled-components";
 import Background from "./components/background";
@@ -14,7 +14,20 @@ import SignupPage from './pages/signup';
 import SignInPage from './pages/signin';
 import Marketplace from './pages/marketplace';
 import ThemeButtons from './components/ThemeButtons';
+import { Provider } from 'react-redux';
+import {createStore,applyMiddleware,compose} from 'redux'; 
+import {getUsers} from './actions/users'
+import thunk from 'redux-thunk';
+import reducers from './reducers';
+import { useDispatch } from 'react-redux';
+
+const store = createStore(reducers,compose(applyMiddleware(thunk)));
 export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {dispatch(getUsers())},[dispatch]);
+
+
   return (
     <>
       <Navbar>
@@ -53,6 +66,6 @@ export default function App() {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(<Provider store={store}><App /></Provider>);
 
 
