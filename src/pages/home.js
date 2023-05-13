@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
 import ThemeButtons from '../components/ThemeButtons';
-
+import BuyCard from '../components/BuyCard';
 const Home = () => {
     const [imageUrl, setImageUrl] = useState(null);
     const [hovered, setHovered] = useState(false);
@@ -100,26 +100,35 @@ const Home = () => {
     return (
         <div style={{
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row', 
             justifyContent: 'center',
             alignItems: 'center',
             height: '80vh',
             paddingTop: '10vh',
         }}
         >
-             <ThemeButtons/>
-
-            <canvas id="canvas" />
-            <button style={styleButton}
+            <div style={{ 
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginRight: '2rem', 
+            }}>
+                <ThemeButtons/>
+                <canvas id="canvas" />
+                <button style={styleButton}
                 onClick={generateAndAddImage}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 hidden={isFetching}>
                 <span style={{ color: "white" }}>Get new Image</span>
             </button>
-
+                
+                
+            </div>
+            <div> 
+                <BuyCard></BuyCard>
+            </div>
         </div>
-
     );
 };
 
