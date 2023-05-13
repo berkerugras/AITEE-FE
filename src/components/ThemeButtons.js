@@ -1,9 +1,18 @@
 import React from 'react';
+import Home from '../pages/home';
+import { useState, useEffect, useRef } from 'react';
+import '../styles/style.css'
+
+
+
 
 const ThemeButtons = () => {
+  
+const [isArt, setArt] = useState(false);
+
   return (
     <div style={{ textAlign: 'center' }}>
-      <h2>Themes</h2>
+      <h1 className='theme-style'>Choose a Theme</h1>
       <button
         style={{
           backgroundColor: '#F5DEB3',
@@ -33,7 +42,7 @@ const ThemeButtons = () => {
         onClick={() => {}}
         onMouseOver={() => console.log('Hovered Neon')}
       >
-        Neon
+        Rock
       </button>
     </div>
   );

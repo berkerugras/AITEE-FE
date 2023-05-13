@@ -31,7 +31,7 @@ const Home = () => {
         setImageUrl(null);
         setIsFetching(true);
 
-        fetch('/api/generate')
+        fetch('/api/generate/rock')
             .then(response => response.blob())
             .then(imageBlob => {
                 console.log("1", isFetching);
@@ -107,7 +107,8 @@ const Home = () => {
             paddingTop: '10vh',
         }}
         >
-            <ThemeButtons/>
+             <ThemeButtons/>
+
             <canvas id="canvas" />
             <button style={styleButton}
                 onClick={generateAndAddImage}
@@ -116,6 +117,7 @@ const Home = () => {
                 hidden={isFetching}>
                 <span style={{ color: "white" }}>Get new Image</span>
             </button>
+
         </div>
 
     );
