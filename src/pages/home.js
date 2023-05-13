@@ -9,6 +9,8 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(null);
     const [canvasObj, setCanvas] = useState(null);
+    const themeRef = useRef();
+
     const handleMouseEnter = () => {
         setHovered(true);
     };
@@ -31,6 +33,7 @@ const Home = () => {
         setImageUrl(null);
         setIsFetching(true);
 
+        if(themeRef.current.getMyState() === false){
         fetch('/api/generate/rock')
             .then(response => response.blob())
             .then(imageBlob => {
@@ -46,6 +49,23 @@ const Home = () => {
                 setIsLoading(false);
                 console.log(err);
             })
+        }else{
+            fetch('/api/generate')
+            .then(response => response.blob())
+            .then(imageBlob => {
+                console.log("1", isFetching);
+                const imageUrl = URL.createObjectURL(imageBlob);
+                setImageUrl(imageUrl);
+                setIsFetching(false);
+                console.log("2", isFetching);
+
+            })
+            .catch(err => {
+                setIsFetching(false);
+                setIsLoading(false);
+                console.log(err);
+            })
+        }
     }
 
 
@@ -113,7 +133,7 @@ const Home = () => {
                 alignItems: 'center',
                 marginRight: '2rem', 
             }}>
-                <ThemeButtons/>
+                <ThemeButtons ref={themeRef}/>
                 <canvas id="canvas" />
                 <button style={styleButton}
                 onClick={generateAndAddImage}
