@@ -9,33 +9,53 @@ import { forwardRef, useImperativeHandle } from 'react';
 
 const ThemeButtons = React.forwardRef((props, ref) => {
   
-const [isArt, setArt] = useState(false);
+const [isArt, setArt] = useState(null);
 const [isClicked, setClicked] = useState(false);
 const [isRockClicked, setRockClicked] = useState(false);
+const [hoveredArt, setHoveredArt] = useState(false);
+const [hoveredRock, setHoveredRock] = useState(false);
 
 useImperativeHandle(ref, () => ({getMyState: () => {return isArt}}), [isArt]);
 
 
+
+const handleArtMouseEnter = () => {
+  setHoveredArt(true);
+};
+
+const handleArtMouseLeave = () => {
+  setHoveredArt(false);
+};
+
+const handleRockMouseEnter = () => {
+  setHoveredRock(true);
+};
+
+const handleRockMouseLeave = () => {
+  setHoveredRock(false);
+};
 const styleArtButton = {
-  backgroundColor: isClicked ? '#F5DEB3' : "red",
-  color: '#333',
+  backgroundColor: isClicked ?  "red" : '#A020F0',
+  color: '#FFD700',
   padding: '10px 20px',
-  border: 'none',
+  border: hoveredArt?'solid black':' ',
   borderRadius: '5px',
   marginRight: '10px',
   fontWeight: 'bold',
   fontSize: '16px',
+  cursor:"pointer"
 
 };
 
 const styleRockButton = {
-  backgroundColor: isRockClicked ? '#A020F0' : "red",
-  color: '#fff',
+  backgroundColor: isRockClicked ?  "red" :'#A020F0',
+  color: '#FFD700',
   padding: '10px 20px',
-  border: 'none',
+  border: hoveredRock?'solid black':'',
   borderRadius: '5px',
   fontWeight: 'bold',
   fontSize: '16px',
+  cursor:"pointer"
 
 };
 
@@ -45,14 +65,16 @@ const styleRockButton = {
       <button
         style={styleArtButton}
         onClick={() => {setArt(true); setClicked(true); setRockClicked(false);}}
-        onMouseOver={() => console.log(isArt)}
+         onMouseEnter={handleArtMouseEnter}
+         onMouseLeave={handleArtMouseLeave}
       >
         Art
       </button>
       <button
         style={styleRockButton}
         onClick={() => {setArt(false); setClicked(false); setRockClicked(true);}}
-        onMouseOver={() => console.log(isArt)}
+        onMouseEnter={handleRockMouseEnter}
+        onMouseLeave={handleRockMouseLeave}
       >
         Rock
       </button>

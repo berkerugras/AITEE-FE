@@ -27,125 +27,134 @@ const Home = () => {
         borderRadius: "1.10rem"
     };
 
-    function generateImage() {
+    async function generateImage() {
 
         setIsLoading(true);
         setImageUrl(null);
         setIsFetching(true);
 
-        if(themeRef.current.getMyState() === false){
-        fetch('/api/generate/rock')
-            .then(response => response.blob())
-            .then(imageBlob => {
-                console.log("1", isFetching);
-                const imageUrl = URL.createObjectURL(imageBlob);
-                setImageUrl(imageUrl);
-                setIsFetching(false);
-                console.log("2", isFetching);
+        if (themeRef.current.getMyState() === false) {
+           await fetch('/api/generate/rock')
+                .then(response => response.blob())
+                .then(imageBlob => {
+                    console.log("1", isFetching);
+                    const imageUrl = URL.createObjectURL(imageBlob);
+                    console.log(imageUrl)
+                    setImageUrl(imageUrl);
+                    setIsFetching(false);
+                    console.log("2", isFetching);
 
-            })
-            .catch(err => {
-                setIsFetching(false);
-                setIsLoading(false);
-                console.log(err);
-            })
-        }else{
-            fetch('/api/generate')
-            .then(response => response.blob())
-            .then(imageBlob => {
-                console.log("1", isFetching);
-                const imageUrl = URL.createObjectURL(imageBlob);
-                setImageUrl(imageUrl);
-                setIsFetching(false);
-                console.log("2", isFetching);
+                })
+                .catch(err => {
+                    setIsFetching(false);
+                    setIsLoading(false);
+                    console.log(err);
+                })
+        } else {
+            await fetch('/api/generate')
+                .then(response => response.blob())
+                .then(imageBlob => {
+                    console.log("1", isFetching);
+                    const imageUrl = URL.createObjectURL(imageBlob);
+                    console.log(imageUrl)
+                    setImageUrl(imageUrl);
+                    setIsFetching(false);
+                    console.log("2", isFetching);
 
-            })
-            .catch(err => {
-                setIsFetching(false);
-                setIsLoading(false);
-                console.log(err);
-            })
+                })
+                .catch(err => {
+                    setIsFetching(false);
+                    setIsLoading(false);
+                    console.log(err);
+                })
         }
     }
-
-
-
-    useEffect(() => generateImage(), []);
     
-    useEffect(() => {
-        // create a new Fabric.js canvas instance when the component mounts
-        const canvas = new fabric.Canvas("canvas", {
-          width: 500,
-          height: 500
-        });
-    
-        // create a Fabric.js image object with the T-shirt image source
-        new fabric.Image.fromURL('/black_tshirt.png', img => {
-          img.set({
-            selectable:false,
-            evented:false,
-            scaleX: 0.5,
-            scaleY: 0.5
-          });
-          canvas.add(img);
-          setCanvas(canvas);
-
-        });
-
-    
-      }, []);
-
-      const addImgOnTshirt = () => {
+    const addImgOnTshirt = () => {
         new fabric.Image.fromURL(imageUrl, img => {
             img.set({
 
                 scaleX: 0.3,
                 scaleY: 0.3
-              });
-            if(canvasObj.getObjects().length>1){
+            });
+            if (canvasObj.getObjects().length > 1) {
                 canvasObj.remove(canvasObj.item(1));
             }
             canvasObj.add(img);
             canvasObj.centerObject(img);
-
             canvasObj.renderAll();
         });
     }
 
-    function generateAndAddImage(){
-        generateImage();
-        addImgOnTshirt();
+     async function generateAndAddImage() {
+         await generateImage();
+         addImgOnTshirt();
     }
+
+
+    useEffect(() => {
+        const canvas = new fabric.Canvas("canvas", {
+            width: 500,
+            height: 500
+        });
+
+        new fabric.Image.fromURL('/black_tshirt.png', img => {
+            img.set({
+                selectable: false,
+                evented: false,
+                scaleX: 0.5,
+                scaleY: 0.5
+            });
+            canvas.add(img);
+            setCanvas(canvas);
+
+        });
+
+
+    }, []);
+
+    useEffect(() => {
+        generateImage();
+      }, []);
+    
+      useEffect(() => {
+        if (imageUrl) {
+          addImgOnTshirt();
+        }
+      }, [imageUrl]);
+
+
+
 
     return (
         <div style={{
             display: 'flex',
-            flexDirection: 'row', 
+            flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
             height: '80vh',
             paddingTop: '10vh',
         }}
         >
-            <div style={{ 
+            <div style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                marginRight: '2rem', 
+                marginRight: '2rem',
             }}>
-                <ThemeButtons ref={themeRef}/>
+                <ThemeButtons ref={themeRef} />
                 <canvas id="canvas" />
                 <button style={styleButton}
-                onClick={generateAndAddImage}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                hidden={isFetching}>
-                <span style={{ color: "white" }}>Get new Image</span>
-            </button>
-                
-                
+                    onClick={generateAndAddImage}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    hidden={isFetching}>
+                    <span style={{ color: "white" }}>Get new Image</span>
+                </button>
+
+
             </div>
-            <div> 
+            <div>
                 <BuyCard></BuyCard>
             </div>
         </div>
