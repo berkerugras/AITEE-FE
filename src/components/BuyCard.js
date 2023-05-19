@@ -52,10 +52,10 @@ const AntdCard = () => {
   const [price, setPrice] = useState(10);
 
   return (
-    <Card title="Product Card">
+    <Card  title="Product Card">
       <SizeOptions />
       <TypeOptions onPriceChange={setPrice} />
-      <Button style={{marginTop:'20px'}} type="primary" size="large" block>
+      <Button style={{ marginTop: '20px' }} type="primary" size="large" block>
         Buy (${price})
       </Button>
     </Card>

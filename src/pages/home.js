@@ -1,8 +1,9 @@
 import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { fabric } from 'fabric';
 import ThemeButtons from '../components/ThemeButtons';
 import BuyCard from '../components/BuyCard';
+import ProductButtons from '../components/ProductButtons';
 const Home = () => {
     const [imageUrl, setImageUrl] = useState(null);
     const [hovered, setHovered] = useState(false);
@@ -10,6 +11,8 @@ const Home = () => {
     const [isFetching, setIsFetching] = useState(null);
     const [canvasObj, setCanvas] = useState(null);
     const themeRef = useRef();
+    const [canvasImage, setCanvasImage] = useState(null);
+
 
     const handleMouseEnter = () => {
         setHovered(true);
@@ -34,15 +37,12 @@ const Home = () => {
         setIsFetching(true);
 
         if (themeRef.current.getMyState() === false) {
-           await fetch('/api/generate/rock')
+            await fetch('/api/generate/rock')
                 .then(response => response.blob())
                 .then(imageBlob => {
-                    console.log("1", isFetching);
                     const imageUrl = URL.createObjectURL(imageBlob);
-                    console.log(imageUrl)
                     setImageUrl(imageUrl);
                     setIsFetching(false);
-                    console.log("2", isFetching);
 
                 })
                 .catch(err => {
@@ -56,10 +56,8 @@ const Home = () => {
                 .then(imageBlob => {
                     console.log("1", isFetching);
                     const imageUrl = URL.createObjectURL(imageBlob);
-                    console.log(imageUrl)
                     setImageUrl(imageUrl);
                     setIsFetching(false);
-                    console.log("2", isFetching);
 
                 })
                 .catch(err => {
@@ -69,7 +67,7 @@ const Home = () => {
                 })
         }
     }
-    
+
     const addImgOnTshirt = () => {
         new fabric.Image.fromURL(imageUrl, img => {
             img.set({
@@ -86,10 +84,27 @@ const Home = () => {
         });
     }
 
-     async function generateAndAddImage() {
-         await generateImage();
-         addImgOnTshirt();
+    async function generateAndAddImage() {
+        await generateImage();
+        addImgOnTshirt();
     }
+
+    const canvasImageRef = useCallback(node => {
+        if (node !== null) {
+            if (node.getMyState() !== canvasImage) {
+                if (node.getMyState() === "BT") {
+                    setCanvasImage("BT");
+                }
+                else {
+                    setCanvasImage("WH");
+                }
+            }
+            else {
+                setCanvasImage("BT");
+            }
+        }
+    }, []);;
+
 
 
     useEffect(() => {
@@ -98,30 +113,72 @@ const Home = () => {
             height: 500
         });
 
-        new fabric.Image.fromURL('/black_tshirt.png', img => {
-            img.set({
-                selectable: false,
-                evented: false,
-                scaleX: 0.5,
-                scaleY: 0.5
+        if (canvasImage === "BT") {
+            new fabric.Image.fromURL('/black_tshirt.png', img => {
+                img.set({
+                    selectable: false,
+                    evented: false,
+                    scaleX: 0.5,
+                    scaleY: 0.5
+                });
+                canvas.add(img);
+                if (canvasObj) {
+                    new fabric.Image.fromURL(imageUrl, img => {
+                        img.set({
+            
+                            scaleX: 0.3,
+                            scaleY: 0.3
+                        });
+
+                        canvas.add(img);
+                        canvas.centerObject(img);
+                        canvas.renderAll();
+                    });
+
+                }
+                setCanvas(canvas);
+
             });
-            canvas.add(img);
-            setCanvas(canvas);
+        } else if (canvasImage === "WH") {
+            new fabric.Image.fromURL('/white_hoodie.png', img => {
+                img.set({
+                    selectable: false,
+                    evented: false,
+                    scaleX: 0.85,
+                    scaleY: 0.85
+                });
+                canvas.add(img);
+                if (canvasObj) {
+                    new fabric.Image.fromURL(imageUrl, img => {
+                        img.set({
+            
+                            scaleX: 0.3,
+                            scaleY: 0.3
+                        });
 
-        });
+                        canvas.add(img);
+                        canvas.centerObject(img);
+                        canvas.renderAll();
+                    });
+
+                }
+                setCanvas(canvas);
+
+            });
+        }
 
 
-    }, []);
+    }, [canvasImage]);
 
     useEffect(() => {
         generateImage();
-      }, []);
-    
-      useEffect(() => {
+    }, []);
+
+    useEffect(() => {
         if (imageUrl) {
-          addImgOnTshirt();
+            addImgOnTshirt();
         }
-      }, [imageUrl]);
+    }, [imageUrl]);
 
 
 
@@ -155,6 +212,7 @@ const Home = () => {
 
             </div>
             <div>
+                <ProductButtons ref={canvasImageRef}></ProductButtons>
                 <BuyCard></BuyCard>
             </div>
         </div>
