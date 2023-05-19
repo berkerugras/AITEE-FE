@@ -146,7 +146,14 @@ body {
     width: 100%;
     font-size: 18px;
   }
+  .image-button{
+    border: none;
+    background: none;
+    padding: 0;
+  }
 
-  .theme-style{
-    
+  .button-image {
+    width: 4rem; 
+    height: 4rem; 
+    margin-bottom: 0.5rem;
   }
