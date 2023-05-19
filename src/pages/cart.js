@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Card, Col, InputNumber, Row, Select, Typography } from 'antd';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const { Option } = Select;
 const { Title } = Typography;
 
 const CartPage = () => {
-  const [items, setItems] = useState([]);
-  const [selectedSize, setSelectedSize] = useState('S');
+  const location = useLocation();
+  const [items, setItems] = useState(location.state && location.state.items ? location.state.items : []);
+  const [selectedSize, setSelectedSize] = useState('');
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const navigate = useNavigate();
 
   const handleAddToCart = () => {
     const newItem = {
       size: selectedSize,
-      price: 20, // Replace with the actual price of the T-shirt
+      price: location.state?.selectedOptions.price,
       quantity: selectedQuantity,
     };
     setItems([...items, newItem]);
@@ -24,6 +27,11 @@ const CartPage = () => {
 
   const handleQuantityChange = (value) => {
     setSelectedQuantity(value);
+  };
+
+  const handleCheckout = () => {
+    // Pass the items data to the checkout page
+    navigate('/checkout', { state: { items } });
   };
 
   const totalPrice = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -66,12 +74,13 @@ const CartPage = () => {
           <Card>
             <h3>Cart Summary</h3>
             <p>Total Price: ${totalPrice}</p>
-            <Button type="primary" disabled={items.length === 0}>
+            <Button type="primary" disabled={items.length === 0} onClick={handleCheckout}>
               Checkout
             </Button>
           </Card>
         </Col>
       </Row>
+      AAAAAA
     </div>
   );
 };
