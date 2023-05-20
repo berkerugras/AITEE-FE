@@ -53,23 +53,7 @@ const CartPage = () => {
             <p>Your cart is empty</p>
           )}
         </Col>
-        <Col span={8}>
-          <Card>
-            <h3>Add to Cart</h3>
-            <Select value={selectedSize} onChange={handleSizeChange}>
-              <Option value="S">Small</Option>
-              <Option value="M">Medium</Option>
-              <Option value="L">Large</Option>
-            </Select>
-            <br />
-            <br />
-            <InputNumber value={selectedQuantity} onChange={handleQuantityChange} />
-            <br />
-            <br />
-            <Button type="primary" onClick={handleAddToCart}>
-              Add to Cart
-            </Button>
-          </Card>
+        <Col span={8}>          
           <br />
           <Card>
             <h3>Cart Summary</h3>
@@ -79,8 +63,7 @@ const CartPage = () => {
             </Button>
           </Card>
         </Col>
-      </Row>
-      AAAAAA
+      </Row>     
     </div>
   );
 };
