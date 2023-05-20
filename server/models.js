@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 
 const postSchema = mongoose.Schema({
-username: String,
-password: String,
-address: String,
-age: Number,
-phone: Number
+username: {type:String},
+password: {type:String},
+email: {type:String},
+address: {type:String},
+age: {type:Number},
+phone: {type:Number}
 });
 
 const PostMessage = mongoose.model('PostMessage', postSchema);

@@ -4,7 +4,11 @@ import { fabric } from 'fabric';
 import ThemeButtons from '../components/ThemeButtons';
 import BuyCard from '../components/BuyCard';
 import ProductButtons from '../components/ProductButtons';
+import { useLocation, useNavigate } from 'react-router-dom';
 const Home = () => {
+    const location=useLocation()
+    
+
     const [imageUrl, setImageUrl] = useState(null);
     const [hovered, setHovered] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -193,6 +197,7 @@ const Home = () => {
             paddingTop: '10vh',
         }}
         >
+            <h1>hello {location.state.id}</h1>
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',

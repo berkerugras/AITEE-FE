@@ -1,14 +1,47 @@
 import React from "react";
 import { Card, Form, Input, Button, Typography } from "antd";
 import { Link } from 'react-router-dom';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const { Text } = Typography;
 const SignupPage = () => {
+  const [email, setEmail] = useState(null)
+  const [userName, setUsername] = useState(null);
+  const [password, setPassword] = useState(null)
+  const [address, setAddress] = useState(null)
+  const [age, setAge] = useState(null)
+  const [phone, setPhone] = useState(null)
+
   const onFinish = (values) => {
     const age = Number(values.age);
     // history.push(`/profile?username=${username}&password=${password}`);
     console.log("Received values of form: ", values);
     console.log("Age: ", age);
   };
+  const history=useNavigate();
+
+
+  async function submit(e){
+    e.preventDefault();
+    try{
+      await axios.post("http://localhost:5000/posts/register",{
+        userName,email,password,address,age,phone
+      }).then(res=>{
+        console.log(res.data);
+        if(res.data==="exist"){
+            alert("user already exist")
+        }
+        else if(res.data==="not exist"){
+          history("/home",{state:{id:email}});
+      }
+      })
+    }catch(e){
+      alert("wrong details");
+      console.log(e);
+
+    }
+  }
 
   // const [username, setUsername] = useState('');
   // const [password, setPassword] = useState('');
@@ -43,6 +76,7 @@ const SignupPage = () => {
           Sign Up
         </Title>
         <Form
+          action="POST"
           name="basic"
           onFinish={onFinish}
           labelCol={{ span: 8 }}
@@ -55,7 +89,7 @@ const SignupPage = () => {
             rules={[{ required: true, message: "Please input your username!" }]}
             style={{ marginBottom: "1em" }}
           >
-            <Input/>
+            <Input type="username" onChange={(e) => { setUsername(e.target.value) }} />
           </Form.Item>
 
           <Form.Item
@@ -64,7 +98,16 @@ const SignupPage = () => {
             rules={[{ required: true, message: "Please input your password!" }]}
             style={{ marginBottom: "1em" }}
           >
-            <Input.Password />
+            <Input.Password onChange={(e) => { setPassword(e.target.value) }} />
+          </Form.Item>
+
+          <Form.Item
+            label="Email"
+            name="Email"
+            rules={[{ required: true, message: "Please input your email address!" }]}
+            style={{ marginBottom: "1em" }}
+          >
+            <Input style={{ width: "100%" }} onChange={(e) => { setEmail(e.target.value) }} />
           </Form.Item>
 
           <Form.Item
@@ -73,19 +116,19 @@ const SignupPage = () => {
             rules={[{ required: true, message: "Please input your address!" }]}
             style={{ marginBottom: "1em" }}
           >
-            <Input style={{ width: "100%" }} />
+            <Input style={{ width: "100%" }} onChange={(e) => { setAddress(e.target.value) }} />
           </Form.Item>
 
-         <Form.Item
+          <Form.Item
             label="Age"
-            name="age"            
+            name="age"
             rules={[
               { required: true, message: 'Please input your age!' },
               { validator: validateAge }
             ]}
             style={{ marginBottom: '1em' }}
           >
-            <Input type="text" style={{ width: '100%' }}/>
+            <Input type="text" style={{ width: '100%' }} onChange={(e) => { setAge(e.target.value) }} />
           </Form.Item>
           <Form.Item
             label="Phone"
@@ -99,14 +142,14 @@ const SignupPage = () => {
             ]}
             style={{ marginBottom: "1em" }}
           >
-            <Input style={{ width: "100%" }} />
+            <Input style={{ width: "100%" }} onChange={(e) => { setPhone(e.target.value) }} />
           </Form.Item>
 
           <Form.Item wrapperCol={{ span: 16, offset: 8 }}>
-            <Button type="primary" htmlType="submit" style={{ float: "right" }}>
+            <Button onClick={submit} type="primary" htmlType="submit" style={{ float: "right" }}>
               Sign Up
-            </Button>            
-          </Form.Item>          
+            </Button>
+          </Form.Item>
         </Form>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1em' }}>
           <Text>
