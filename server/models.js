@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const postSchema = mongoose.Schema({
-username: {type:String},
+userName: {type:String},
 password: {type:String},
 email: {type:String},
 address: {type:String},

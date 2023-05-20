@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 const { Title, Text } = Typography;
 
 const SignInPage = () => {
-  const [userName, setUsername]=useState(null);
+  const [email, setEmail]=useState(null);
   const [password, setPassword]=useState(null)
 
   const history=useNavigate();
@@ -16,10 +16,10 @@ const SignInPage = () => {
     e.preventDefault();
     try{
       await axios.post("http://localhost:5000/posts/login",{
-        userName,password
+        email,password
       }).then(res=>{
         if(res.data==="exist"){
-          history("/home");
+          history("/home",{state:{id:email}});
         }
         else if(res.data==="not exist"){
           alert("User not exists")
@@ -48,11 +48,11 @@ const SignInPage = () => {
           wrapperCol={{ span: 16 }}
         >
           <Form.Item
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input type="username" onChange={(e)=>{setUsername(e.target.value)}} />
+            <Input type="email" onChange={(e)=>{setEmail(e.target.value)}} />
           </Form.Item>
 
           <Form.Item
