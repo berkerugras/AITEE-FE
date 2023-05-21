@@ -1,5 +1,12 @@
 import PostMessage from "./models.js";
+const maxTime = 3 * 24 * 60 * 60;
+import jwt from "jsonwebtoken"
 
+const createToken = (id) => {
+    return jwt.sign({ id }, "", {
+        expiresIn: maxTime,
+    });
+};
 
 export const getPosts = async (req, res) => {
     try {
@@ -49,11 +56,19 @@ export const createUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
-        console.log(req.body);
         const check = await PostMessage.findOne({ email: email })
-        console.log(check);
+        console.log(check._id.valueOf());
         if (check) {
             res.json("exist");
+            const token = createToken(check._id.valueOf());
+            res.cookie("jwt", token, {
+                withCredentials: true,
+                httpOnly: false,
+                maxTime: maxTime * 1000,
+            });
+            res.session.token = token;
+
+            res.status(200).json({ email: PostMessage.email, created: true });
         }
         else {
             res.json("not exist");
@@ -64,3 +79,35 @@ export const loginUser = async (req, res) => {
         res.json("error and not exist")
     }
 }
+
+/*export const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        const check = await PostMessage.findOne({ email: email })
+        console.log(check._id.valueOf());
+        console.log(res);
+
+        if (check) {
+            res.json("exist");
+            const token = createToken(check._id.valueOf());
+            res.cookie("jwt", token, {
+                withCredentials: true,
+                httpOnly: false,
+                maxTime: maxTime * 1000,
+            });
+            res.session.token = { "token": token };
+            res.session.email = { "email": check.email };
+            res.session.userName = { "userName": check.userName };
+            console.log(res.session.token);
+
+        }
+
+        else {
+            res.json("not exist");
+        }
+    }
+    catch (e) {
+        console.log(e);
+        res.json("error and not exist")
+    }
+}*/

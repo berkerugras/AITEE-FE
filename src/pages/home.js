@@ -6,8 +6,8 @@ import BuyCard from '../components/BuyCard';
 import ProductButtons from '../components/ProductButtons';
 import { useLocation, useNavigate } from 'react-router-dom';
 const Home = () => {
-    const location=useLocation()
-    
+    const location = useLocation()
+
 
     const [imageUrl, setImageUrl] = useState(null);
     const [hovered, setHovered] = useState(false);
@@ -29,9 +29,11 @@ const Home = () => {
     const styleButton = {
         display: !isFetching ? 'flex' : "none",
         marginBottom: '2rem',
-        backgroundColor: hovered ? "DeepSkyBlue" : "blue",
+        backgroundColor: hovered ? "#0065c4" : "#001a33",
         padding: "1.25rem",
-        borderRadius: "1.10rem"
+        borderRadius: "1.10rem",
+        fontFamily: 'HomeFont',
+        fontSize: "32px",
     };
 
     async function generateImage() {
@@ -129,7 +131,7 @@ const Home = () => {
                 if (canvasObj) {
                     new fabric.Image.fromURL(imageUrl, img => {
                         img.set({
-            
+
                             scaleX: 0.3,
                             scaleY: 0.3
                         });
@@ -155,7 +157,7 @@ const Home = () => {
                 if (canvasObj) {
                     new fabric.Image.fromURL(imageUrl, img => {
                         img.set({
-            
+
                             scaleX: 0.3,
                             scaleY: 0.3
                         });
@@ -188,6 +190,7 @@ const Home = () => {
 
 
     return (
+
         <div style={{
             display: 'flex',
             flexDirection: 'row',
