@@ -1,9 +1,9 @@
 import PostMessage from "./models.js";
-const maxTime = 3 * 24 * 60 * 60;
 import jwt from "jsonwebtoken"
+const maxTime = 3 * 24 * 60 * 60;
 
 const createToken = (id) => {
-    return jwt.sign({ id }, "", {
+    return jwt.sign({ id }, "61d333a8-6325-4506-96e7-a180035cc26f", {
         expiresIn: maxTime,
     });
 };
@@ -36,8 +36,26 @@ export const createUser = async (req, res) => {
             phone: phone
         }
         console.log(registerData);
-        const check = await PostMessage.findOne({ email: email })
-        if (check) {
+        const user = await PostMessage.findOne({ email: email })
+
+        if (user) {
+            const token = createToken(user._id.valueOf());
+            console.log(token);
+            res.cookie("jwt", token, {
+                withCredentials: true,
+                httpOnly: false,
+                maxTime: maxTime * 1000,
+            });
+            req.session = {
+                token: token,
+                email: user.email,
+                userName: user.userName
+            };
+            res.session = {
+                token: token,
+                email: user.email,
+                userName: user.userName
+            };
             res.json("exist")
         }
         else {
@@ -56,19 +74,24 @@ export const createUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
-        const check = await PostMessage.findOne({ email: email })
-        console.log(check._id.valueOf());
-        if (check) {
-            res.json("exist");
-            const token = createToken(check._id.valueOf());
+        const user = await PostMessage.findOne({ email: email, password: password })
+        console.log(user._id.valueOf());
+        if (user) {
+            const token = createToken(user._id.valueOf());
+            console.log(token);
             res.cookie("jwt", token, {
-                withCredentials: true,
                 httpOnly: false,
                 maxTime: maxTime * 1000,
             });
-            res.session.token = token;
+            const responseData = {
+                exist: "exist",
+                token: token,
+                user: user._id.valueOf(),
+                email: user.email,
+                userName: user.userName
+            };
 
-            res.status(200).json({ email: PostMessage.email, created: true });
+            res.status(200).json(responseData);
         }
         else {
             res.json("not exist");
@@ -76,7 +99,7 @@ export const loginUser = async (req, res) => {
     }
     catch (e) {
         console.log(e);
-        res.json("error and not exist")
+        res.json("not exist")
     }
 }
 

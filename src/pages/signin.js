@@ -3,29 +3,30 @@ import { Button, Card, Form, Input, Typography } from 'antd';
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Cookies from 'js-cookie';
 
 const { Title, Text } = Typography;
 
 const SignInPage = () => {
-  const [email, setEmail]=useState(null);
-  const [password, setPassword]=useState(null)
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null)
 
-  const history=useNavigate();
-  
-  async function submit(e){
+  const history = useNavigate();
+
+  async function submit(e) {
     e.preventDefault();
-    try{
-      await axios.post("http://localhost:5000/posts/login",{
-        email,password
-      }).then(res=>{
-        if(res.data==="exist"){
-          history("/home",{state:{id:email}});
+    try {
+      await axios.post("http://localhost:5000/posts/login", {
+        email, password
+      }).then(res => {
+        if (res.data.exist === "exist") {
+          history("/home", { state: { id: email } });
         }
-        else if(res.data==="not exist"){
+        else if (res.data.exist === "not exist") {
           alert("User not exists")
-      }
+        }
       })
-    }catch(e){
+    } catch (e) {
       alert("wrong details");
       console.log(e);
 
@@ -52,7 +53,7 @@ const SignInPage = () => {
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input type="email" onChange={(e)=>{setEmail(e.target.value)}} />
+            <Input type="email" onChange={(e) => { setEmail(e.target.value) }} />
           </Form.Item>
 
           <Form.Item
@@ -60,10 +61,10 @@ const SignInPage = () => {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password onChange={(e)=>{setPassword(e.target.value)}}/>
+            <Input.Password onChange={(e) => { setPassword(e.target.value) }} />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ span: 16, offset: 8 }} style={{width:"100%"}}>
+          <Form.Item wrapperCol={{ span: 16, offset: 8 }} style={{ width: "100%" }}>
             <Button onClick={submit} type="primary" htmlType="submit" style={{ float: "right" }}>
               Sign In
             </Button>

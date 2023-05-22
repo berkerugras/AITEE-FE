@@ -12,16 +12,19 @@ const app = express();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+	credentials: true
+  }));
+app.use(cookieParser());
 
 app.use(session({
-    secret: 'secretkey',
-    resave: false,
-    saveUninitialized: true,
+    secret: "61d333a8-6325-4506-96e7-a180035cc26f",
+    resave: true,
+    saveUninitialized: false,
 }));
 
 
-app.use(cookieParser());
 app.use('/posts', postRoutes);
 app.get("/", (req, res) => {
     res.send("hello")
