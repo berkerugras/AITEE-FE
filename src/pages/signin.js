@@ -1,31 +1,43 @@
 import React from 'react';
 import { Button, Card, Form, Input, Typography } from 'antd';
 import axios from "axios";
-import { Link, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import Cookies from 'js-cookie';
+import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
+axios.defaults.withCredentials = true;
 const { Title, Text } = Typography;
 
 const SignInPage = () => {
+  const history = useNavigate();
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null)
 
-  const history = useNavigate();
 
   async function submit(e) {
     e.preventDefault();
     try {
       await axios.post("http://localhost:5000/posts/login", {
         email, password
-      }).then(res => {
+      }, {
+        withCredentials: true
+      }).then((res) => {
         if (res.data.exist === "exist") {
-          history("/home", { state: { id: email } });
+          console.log(res.data);
+          console.log(res.data.token);
+          localStorage.setItem("userData", JSON.stringify(res.data))
+          window.dispatchEvent(new Event("storage"));
+          console.log(JSON.parse(localStorage.getItem("userData")).exist);
+          history("/home", { localStorage: localStorage });
+
         }
         else if (res.data === "not exist") {
+          console.log(res.data);
           alert("User not exists")
         }
       })
+
     } catch (e) {
       alert("wrong details");
       console.log(e);

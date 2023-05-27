@@ -200,7 +200,7 @@ const Home = () => {
             paddingTop: '10vh',
         }}
         >
-            <h1>hello {location.state.id}</h1>
+            <h1>email: {JSON.parse(localStorage.getItem("userData")).email}</h1>
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',

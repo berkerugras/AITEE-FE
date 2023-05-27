@@ -73,23 +73,31 @@ export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
         const user = await PostMessage.findOne({ email: email, password: password })
+        console.log(user.address);
         console.log(user._id.valueOf());
+        //to-do
         if (user) {
             const token = createToken(user._id.valueOf());
             console.log(token);
-            res.cookie("jwt", token, {
-                httpOnly: false,
-                maxTime: maxTime * 1000,
-            });
+            //cookie section
+            const options={
+                maxTime: new Date(Date.now()+maxTime)*1000,
+                httpOnly: true
+            };
             const responseData = {
                 exist: "exist",
                 token: token,
                 user: user._id.valueOf(),
                 email: user.email,
-                userName: user.userName
-            };
+                userName: user.userName,
+                address: user.address,
+                phone: user.phone,
+                age: user.age
 
-            res.status(200).json(responseData);
+            };
+            res.status(200).cookie("jwt", token, options).json(responseData);
+         
+            // res.status(200).json(responseData);
         }
         else {
             res.json("not exist");

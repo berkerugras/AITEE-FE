@@ -55,10 +55,10 @@ const ProfilePage = () => {
             </div>
           </Col>
           <Col span={18}>
-            <Title level={2}>John Doe</Title>
-            <Paragraph>Address: 123 Main St</Paragraph>
-            <Paragraph>Age: 30</Paragraph>
-            <Paragraph>Phone: 123-456-7890</Paragraph>
+            <Title level={2}>{JSON.parse(localStorage.getItem("userData")).userName}</Title>
+            <Paragraph>Address: {JSON.parse(localStorage.getItem("userData")).address}</Paragraph>
+            <Paragraph>Age: {JSON.parse(localStorage.getItem("userData")).age}</Paragraph>
+            <Paragraph>Phone: {JSON.parse(localStorage.getItem("userData")).phone}</Paragraph>
           </Col>
         </Row>
       </Card>

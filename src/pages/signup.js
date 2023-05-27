@@ -28,11 +28,11 @@ const SignupPage = () => {
       await axios.post("http://localhost:5000/posts/register",{
         userName,email,password,address,age,phone
       }).then(res=>{
-        console.log(res.data.exist === "exist");
+        console.log(res.data);
         if(res.data.exist==="exist"){
             alert("user already exist")
         }
-        else if(res.data==="not exist"){
+        else if(res.data.exist==="not exist"){
           history("/home",{state:{id:email}});
       }
       })

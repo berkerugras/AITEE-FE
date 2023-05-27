@@ -5,6 +5,7 @@ import Background from "./components/background";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Aitee from './pages/aitee';
 import Home from './pages/home';
+import AntdCard from './components/BuyCard';
 import ButtonTest from './pages/buttonTest';
 import Navbar from './components/navbar/NavbarTop';
 import './styles/style.css';
@@ -59,6 +60,7 @@ export default function App() {
           <Route path="/market" element={<Marketplace />}>
             <Route index element={<Marketplace />} />
           </Route>
+
         </Routes>
       </BrowserRouter>
     </>
