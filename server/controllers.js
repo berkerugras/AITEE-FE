@@ -46,17 +46,15 @@ export const createUser = async (req, res) => {
                 httpOnly: false,
                 maxTime: maxTime * 1000,
             });
-            req.session = {
+
+            const responseData = {
+                exist: "exist",
                 token: token,
                 email: user.email,
                 userName: user.userName
             };
-            res.session = {
-                token: token,
-                email: user.email,
-                userName: user.userName
-            };
-            res.json("exist")
+           
+            res.status(200).json(responseData);
         }
         else {
             await PostMessage.insertMany([registerData])

@@ -22,7 +22,7 @@ const SignInPage = () => {
         if (res.data.exist === "exist") {
           history("/home", { state: { id: email } });
         }
-        else if (res.data.exist === "not exist") {
+        else if (res.data === "not exist") {
           alert("User not exists")
         }
       })
