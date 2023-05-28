@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import bycrypt from "bcrypt";
 
 
-const maxTime = 3*24*60*60; //token expirationı test etmek için bunu 10 yap
+const maxTime = 3 * 24 * 60 * 60; //token expirationı test etmek için bunu 10 yap
 
 const saltRounds = 10
 

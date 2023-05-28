@@ -3,18 +3,24 @@ import './navbar.css';
 
 const Navbar = () => {
     const [showProfileButton, setShowProfileButton] = useState(false);
+    const isLoggedIn = () => {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        if (userData && userData.token) {
+            return <a onClick={localStorage.clear()} className='NavButtonLink' href="/home" style={{ marginLeft: '5%' }}>Logout</a>
 
+        }
+    }
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'));
-        try{
-        if (userData && userData.token) {
-            setShowProfileButton(true);
-        } else {
+        try {
+            if (userData && userData.token) {
+                setShowProfileButton(true);
+            } else {
+                setShowProfileButton(false);
+            }
+        } catch {
             setShowProfileButton(false);
         }
-    }catch{
-        setShowProfileButton(false);
-    }
     }, []);
 
     useEffect(() => {
@@ -54,6 +60,7 @@ const Navbar = () => {
 
                 <div className="NavButton">
                     <a className='NavButtonLink' href='/market' style={{ marginLeft: '5%' }}>Marketplace</a>
+                    {isLoggedIn()}
                 </div>
             </div>
         </>

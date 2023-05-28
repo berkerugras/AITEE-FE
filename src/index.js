@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import styled from "styled-components";
 import Background from "./components/background";
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom';
 import Aitee from './pages/aitee';
 import Home from './pages/home';
 import ButtonTest from './pages/buttonTest';
@@ -30,6 +30,23 @@ const store = createStore(reducers, compose(applyMiddleware(thunk)));
 export default function App() {
   const dispatch = useDispatch();
   const [valid, setValid] = useState(true);
+  const AuthProfileWrapper = () => {
+    return localStorage.getItem('userData') === null || localStorage.getItem('userData') === undefined
+      ? <Navigate to="/signup" replace />
+      : <ProfilePage />;
+  };
+
+  const AuthSignInWrapper = () => {
+    return localStorage.getItem('userData') === null || localStorage.getItem('userData') === undefined
+      ? <SignInPage />
+      : <Navigate to="/home" replace />;
+  };
+
+  const AuthSignUpWrapper = () => {
+    return localStorage.getItem('userData') === null || localStorage.getItem('userData') === undefined
+      ? <SignupPage />
+      : <Navigate to="/home" replace />;
+  };
 
   useEffect(() => { dispatch(getUsers()) }, [dispatch]);
   useEffect(() => {
@@ -73,16 +90,16 @@ export default function App() {
           <Route path="/home" element={<Home />}>
             <Route index element={<Home />} />
           </Route>
-          <Route path="/profile" element={<ProfilePage />}>
+          <Route path="/profile" element={<AuthProfileWrapper />}>
             <Route index element={<ProfilePage />} />
           </Route>
           <Route path="/cart" element={<CartPage />}>
             <Route index element={<CartPage />} />
           </Route>
-          <Route path="/signup" element={<SignupPage />}>
+          <Route path="/signup" element={<AuthSignUpWrapper />}>
             <Route index element={<SignupPage />} />
           </Route>
-          <Route path="/signin" element={<SignInPage />}>
+          <Route path="/signin" element={<AuthSignInWrapper />}>
             <Route index element={<SignInPage />} />
           </Route>
           <Route path="/market" element={<Marketplace />}>
