@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import './navbar.css';
+import { Button } from "antd";
 
 const Navbar = () => {
     const [showProfileButton, setShowProfileButton] = useState(false);
+
+    const deleteLocalStorage = () => {
+        localStorage.clear();
+        window.dispatchEvent(new Event("storage"));
+
+    }
+
     const isLoggedIn = () => {
         const userData = JSON.parse(localStorage.getItem('userData'));
         if (userData && userData.token) {
-            return <a onClick={localStorage.clear()} className='NavButtonLink' href="/home" style={{ marginLeft: '5%' }}>Logout</a>
+            return <Button onClick={deleteLocalStorage}  style={{ marginLeft: '50%' }}>Logout</Button>
 
         }
     }
