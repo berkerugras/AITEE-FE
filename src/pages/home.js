@@ -200,7 +200,6 @@ const Home = () => {
             paddingTop: '10vh',
         }}
         >
-            <h1>email: {JSON.parse(localStorage.getItem("userData"))!==null?JSON.parse(localStorage.getItem("userData")).email:"token expired"}</h1>
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
