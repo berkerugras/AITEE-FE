@@ -69,7 +69,13 @@ const AntdCard = () => {
         price,
         quantity: 1,
       };
-      navigate('/cart', { state: { items: [newItem] } });
+      if (JSON.parse(localStorage.getItem("userData"))) {
+        navigate('/cart', { state: { items: [newItem] } });
+      }
+      else {
+        navigate('/signup');
+
+      }
     }
   };
 

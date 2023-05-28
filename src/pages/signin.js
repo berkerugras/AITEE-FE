@@ -12,6 +12,7 @@ const { Title, Text } = Typography;
 const SignInPage = () => {
   const history = useNavigate();
   const [email, setEmail] = useState(null);
+  const [valid, setValid] = useState(true);
   const [password, setPassword] = useState(null)
 
 
@@ -24,26 +25,37 @@ const SignInPage = () => {
         withCredentials: true
       }).then((res) => {
         if (res.data.exist === "exist") {
-          console.log(res.data);
-          console.log(res.data.token);
+          // console.log(res.data);
+          // console.log(res.data.token);
           localStorage.setItem("userData", JSON.stringify(res.data))
           window.dispatchEvent(new Event("storage"));
-          console.log(JSON.parse(localStorage.getItem("userData")).exist);
+          // console.log(JSON.parse(localStorage.getItem("userData")).exist);
+          setValid(true);
           history("/home", { localStorage: localStorage });
 
         }
         else if (res.data === "not exist") {
           console.log(res.data);
-          alert("User not exists")
+          setValid(false);
         }
       })
 
     } catch (e) {
-      alert("wrong details");
+      setValid(false);
       console.log(e);
 
     }
   }
+  const conditionalError = () => {
+    if (valid === false) {
+      return <p style={{ marginLeft: '7.5rem', color: 'darkred' }}>Wrong credentials</p>
+
+    }
+  }
+
+  const isFormValid = () => {
+    return email && password;
+  };
 
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
@@ -65,7 +77,7 @@ const SignInPage = () => {
             name="email"
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
-            <Input type="email" onChange={(e) => { setEmail(e.target.value) }} />
+            <Input type="email" onChange={(e) => { setEmail(e.target.value); setValid(true) }} />
           </Form.Item>
 
           <Form.Item
@@ -73,11 +85,11 @@ const SignInPage = () => {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <Input.Password onChange={(e) => { setPassword(e.target.value) }} />
+            <Input.Password onChange={(e) => { setPassword(e.target.value); setValid(true) }} />
           </Form.Item>
-
+          {conditionalError()}
           <Form.Item wrapperCol={{ span: 16, offset: 8 }} style={{ width: "100%" }}>
-            <Button onClick={submit} type="primary" htmlType="submit" style={{ float: "right" }}>
+            <Button disabled={!isFormValid()} onClick={submit} type="primary" htmlType="submit" style={{ float: "right", marginTop: "0.5rem" }}>
               Sign In
             </Button>
           </Form.Item>

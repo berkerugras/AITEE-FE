@@ -9,8 +9,8 @@ import { forwardRef, useImperativeHandle } from 'react';
 
 const ThemeButtons = React.forwardRef((props, ref) => {
 
-  const [isArt, setArt] = useState(null);
-  const [isClicked, setClicked] = useState(false);
+  const [isArt, setArt] = useState(true);
+  const [isClicked, setClicked] = useState(true);
   const [isRockClicked, setRockClicked] = useState(false);
   const [hoveredArt, setHoveredArt] = useState(false);
   const [hoveredRock, setHoveredRock] = useState(false);

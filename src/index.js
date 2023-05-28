@@ -5,7 +5,6 @@ import Background from "./components/background";
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Aitee from './pages/aitee';
 import Home from './pages/home';
-import AntdCard from './components/BuyCard';
 import ButtonTest from './pages/buttonTest';
 import Navbar from './components/navbar/NavbarTop';
 import './styles/style.css';
@@ -21,20 +20,49 @@ import { getUsers } from './actions/users'
 import thunk from 'redux-thunk';
 import reducers from './reducers';
 import { useDispatch } from 'react-redux';
+import jwt_decode from 'jwt-decode';
+import AuthContext, { AuthContextProvider } from './components/shared/AuthContext';
+import { useLocation, useHistory, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 export default function App() {
   const dispatch = useDispatch();
+  const [valid, setValid] = useState(true);
 
   useEffect(() => { dispatch(getUsers()) }, [dispatch]);
-
-
+  useEffect(() => {
+    if (localStorage.getItem('userData') !== null) {
+      try {
+        let token = JSON.parse(localStorage.getItem("userData")).token;
+        console.log(token);
+        if (token !== null) {
+          let decodedToken = jwt_decode(token);
+          console.log("Decoded Token", decodedToken);
+          let currentDate = new Date();
+          console.log(currentDate.getTime());
+          if (decodedToken.exp * 1000 < currentDate.getTime()) {
+            setValid(false);
+            localStorage.clear();
+            window.dispatchEvent(new Event("storage"));
+          } else {
+            setValid(true);
+            console.log("Valid token");
+          }
+        }
+      } catch {
+        localStorage.clear();
+      }
+    }
+  }, []);
   return (
     <>
-      <Navbar>
-
-      </Navbar>
       <BrowserRouter>
+
+        <Navbar>
+
+        </Navbar>
         <Routes>
           <Route path="/aitee" element={<Aitee />}>
             <Route index element={<Aitee />} />
@@ -60,14 +88,14 @@ export default function App() {
           <Route path="/market" element={<Marketplace />}>
             <Route index element={<Marketplace />} />
           </Route>
-
         </Routes>
       </BrowserRouter>
     </>
   );
 }
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(<Provider store={store}><App /></Provider>);
 
 

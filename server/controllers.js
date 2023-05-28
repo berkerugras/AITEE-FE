@@ -1,6 +1,25 @@
 import PostMessage from "./models.js";
 import jwt from "jsonwebtoken"
-const maxTime = 3 * 24 * 60 * 60;
+import bycrypt from "bcrypt";
+
+
+const maxTime = 3*24*60*60; //token expirationı test etmek için bunu 10 yap
+
+const saltRounds = 10
+
+
+const hashPassword = async (password) => {
+
+    try {
+        const salt = await bycrypt.genSalt(saltRounds);
+        const hash = await bycrypt.hash(password, salt);
+        console.log('Hash: ', hash);
+        return hash;
+    } catch (err) {
+        console.error(err.message);
+        throw err;
+    }
+}
 
 const createToken = (id) => {
     return jwt.sign({ id }, "61d333a8-6325-4506-96e7-a180035cc26f", {
@@ -24,41 +43,57 @@ export const getPosts = async (req, res) => {
 
 export const createUser = async (req, res) => {
     try {
-        console.log(req.body);
         const { userName, email, password, address, age, phone } = req.body;
-        console.log(req.body);
+        const passwordHash = await hashPassword(password);
+        console.log("HASHIMIZ BUDUR", passwordHash);
         const registerData = {
             userName: userName,
             email: email,
-            password: password,
+            password: passwordHash,
             address: address,
             age: age,
             phone: phone
         }
-        console.log(registerData);
+        console.log([registerData]);
         const user = await PostMessage.findOne({ email: email })
 
         if (user) {
-            const token = createToken(user._id.valueOf());
-            console.log(token);
-            res.cookie("jwt", token, {
-                withCredentials: true,
-                httpOnly: false,
-                maxTime: maxTime * 1000,
-            });
-
-            const responseData = {
-                exist: "exist",
-                token: token,
-                email: user.email,
-                userName: user.userName
-            };
-           
-            res.status(200).json(responseData);
+            console.log(123);
+            res.status(200).json("exist");
         }
         else {
-            await PostMessage.insertMany([registerData])
-            res.json("not exist")
+            console.log(passwordHash);
+            try {
+                await PostMessage.insertMany([registerData])
+                const new_user = await PostMessage.findOne({ email: email })
+                console.log(new_user);
+                const token = createToken(new_user._id.valueOf());
+                res.cookie("jwt", token, {
+                    withCredentials: true,
+                    httpOnly: false,
+                    maxTime: maxTime * 1000,
+                });
+
+                const responseData = {
+                    exist: "not exist",
+                    token: token,
+                    email: email,
+                    userName: userName,
+                    address: address,
+                    phone: phone,
+                    age: age
+
+                };
+
+                res.status(200).json(responseData);
+            }
+            catch {
+                await PostMessage.deleteMany(registerData)
+                const new_user = await PostMessage.findOne({ email: email })
+                console.log(new_user);
+                res.status(500).json("not exist")
+
+            }
         }
 
     } catch (error) {
@@ -72,16 +107,14 @@ export const createUser = async (req, res) => {
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
-        const user = await PostMessage.findOne({ email: email, password: password })
-        console.log(user.address);
-        console.log(user._id.valueOf());
-        //to-do
-        if (user) {
+        const user = await PostMessage.findOne({ email: email })
+        const isValidPassword = await bycrypt.compare(password, user.password);
+
+        if (isValidPassword) {
             const token = createToken(user._id.valueOf());
             console.log(token);
-            //cookie section
-            const options={
-                maxTime: new Date(Date.now()+maxTime)*1000,
+            const options = {
+                maxTime: new Date(Date.now() + maxTime) * 1000,
                 httpOnly: true
             };
             const responseData = {
@@ -96,7 +129,7 @@ export const loginUser = async (req, res) => {
 
             };
             res.status(200).cookie("jwt", token, options).json(responseData);
-         
+
             // res.status(200).json(responseData);
         }
         else {
@@ -104,8 +137,29 @@ export const loginUser = async (req, res) => {
         }
     }
     catch (e) {
-        console.log(e);
         res.json("not exist")
+    }
+}
+
+
+export const refreshToken = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await PostMessage.findOne({ email: email })
+
+        const token = createToken(user._id.valueOf());
+        const options = {
+            maxTime: new Date(Date.now() + maxTime) * 1000,
+            httpOnly: true
+        };
+        const responseData = {
+            token: token
+        };
+        res.status(200).cookie("jwt", token, options).json(responseData);
+
+    } catch (e) {
+        console.log("couldn't refresh it");
+        res.status(500).json("not exist")
     }
 }
 

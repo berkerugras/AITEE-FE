@@ -19,24 +19,27 @@ const SignupPage = () => {
     console.log("Received values of form: ", values);
     console.log("Age: ", age);
   };
-  const history=useNavigate();
+  const history = useNavigate();
 
 
-  async function submit(e){
+  async function submit(e) {
     e.preventDefault();
-    try{
-      await axios.post("http://localhost:5000/posts/register",{
-        userName,email,password,address,age,phone
-      }).then(res=>{
+    try {
+      await axios.post("http://localhost:5000/posts/register", {
+        userName, email, password, address, age, phone
+      }).then(res => {
         console.log(res.data);
-        if(res.data.exist==="exist"){
-            alert("user already exist")
+        if (res.data === "exist") {
+          alert("user already exist")
         }
-        else if(res.data.exist==="not exist"){
-          history("/home",{state:{id:email}});
-      }
+        else if (res.data.exist === "not exist") {
+          console.log(res.data);
+          localStorage.setItem("userData", JSON.stringify(res.data))
+          window.dispatchEvent(new Event("storage"));
+          history("/home");
+        }
       })
-    }catch(e){
+    } catch (e) {
       alert("wrong details");
       console.log(e);
 

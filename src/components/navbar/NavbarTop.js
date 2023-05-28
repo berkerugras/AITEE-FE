@@ -6,11 +6,15 @@ const Navbar = () => {
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'));
+        try{
         if (userData && userData.token) {
             setShowProfileButton(true);
         } else {
             setShowProfileButton(false);
         }
+    }catch{
+        setShowProfileButton(false);
+    }
     }, []);
 
     useEffect(() => {
