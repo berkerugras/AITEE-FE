@@ -168,13 +168,26 @@ body {
   margin-bottom: 0.5rem;
 }
 
+.generate-buttons {
+  border-radius: 4px;
+  background: #16193a;
+  font-family: 'NavFont';
+  padding: 10px 22px;
+  color: #2fedd4;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
 .home-container {
   justify-content: center;
   align-items: center;
 }
 
 .main-text {
-  font-size: 7rem;
+  font-size: 8.5rem;
   font-family: 'HomeFont';
   color: #000000;
 }

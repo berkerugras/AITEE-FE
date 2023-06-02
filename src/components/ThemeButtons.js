@@ -35,28 +35,14 @@ const ThemeButtons = React.forwardRef((props, ref) => {
     setHoveredRock(false);
   };
   const styleArtButton = {
-    backgroundColor: isClicked ? "#0065c4" : '#001a33',
-    color: '#ffffff',
-    padding: '10px 20px',
+    backgroundColor: isClicked ? "#2c3169" : '#16193a',
     border: hoveredArt ? 'solid black' : ' ',
-    borderRadius: '5px',
-    marginRight: '10px',
-    fontFamily: 'HomeFont',
-    fontSize: '40px',
-    cursor: "pointer"
-
+    marginRight: "6px",
   };
 
   const styleRockButton = {
-    backgroundColor: isRockClicked ? "#0065c4" : '#001a33',
-    color: '#ffffff',
-    padding: '10px 20px',
-    border: hoveredRock ? 'solid black' : '',
-    borderRadius: '5px',
-    fontFamily: 'HomeFont',
-    fontSize: '40px',
-    cursor: "pointer"
-
+    backgroundColor: isRockClicked ? "#2c3169" : '#16193a',
+    border: hoveredRock ? 'solid black' : ''
   };
 
   return (
@@ -64,6 +50,7 @@ const ThemeButtons = React.forwardRef((props, ref) => {
       <div className='main-text'>Choose a Theme</div>
       <button
         style={styleArtButton}
+        className='generate-buttons'
         onClick={() => { setArt(true); setClicked(true); setRockClicked(false); }}
         onMouseEnter={handleArtMouseEnter}
         onMouseLeave={handleArtMouseLeave}
@@ -72,6 +59,7 @@ const ThemeButtons = React.forwardRef((props, ref) => {
       </button>
       <button
         style={styleRockButton}
+        className='generate-buttons'
         onClick={() => { setArt(false); setClicked(false); setRockClicked(true); }}
         onMouseEnter={handleRockMouseEnter}
         onMouseLeave={handleRockMouseLeave}
