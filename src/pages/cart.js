@@ -47,6 +47,7 @@ const CartPage = () => {
                 <p>Size: {item.size}</p>
                 <p>Price: ${item.price}</p>
                 <p>Quantity: {item.quantity}</p>
+                <img src={item.canvasPicUrl} alt=''></img>
               </Card>
             ))
           ) : (

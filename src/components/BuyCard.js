@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button, Radio } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -44,12 +44,19 @@ const TypeOptions = ({ onTypeChange, onPriceChange }) => {
   );
 };
 
-const AntdCard = () => {
+const AntdCard = ({ canvasImgURL }) => {
   const [size, setSize] = useState(null);
   const [type, setType] = useState(null);
   const [price, setPrice] = useState(null);
+  const [canvasPicUrl, setCanvasPicUrl] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setCanvasPicUrl(canvasImgURL)
+  }, [canvasImgURL])
+  useEffect(() => {
+    console.log(canvasPicUrl)
+  }, [canvasPicUrl])
   const handleSizeChange = (selectedSize) => {
     setSize(selectedSize);
   };
@@ -68,6 +75,7 @@ const AntdCard = () => {
         size,
         price,
         quantity: 1,
+        canvasPicUrl
       };
       if (JSON.parse(localStorage.getItem("userData"))) {
         navigate('/cart', { state: { items: [newItem] } });

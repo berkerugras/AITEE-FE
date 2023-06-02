@@ -16,6 +16,7 @@ const Home = () => {
     const [canvasObj, setCanvas] = useState(null);
     const themeRef = useRef();
     const [canvasImage, setCanvasImage] = useState(null);
+    const [canvasURL, setCanvasURL] = useState(null);
 
 
     const handleMouseEnter = () => {
@@ -87,6 +88,8 @@ const Home = () => {
             canvasObj.add(img);
             canvasObj.centerObject(img);
             canvasObj.renderAll();
+            var image = canvasObj.toDataURL("image/png");
+            setCanvasURL(image);
         });
     }
 
@@ -139,6 +142,8 @@ const Home = () => {
                         canvas.add(img);
                         canvas.centerObject(img);
                         canvas.renderAll();
+                        var image = canvas.toDataURL("image/png");
+                        setCanvasURL(image);
                     });
 
                 }
@@ -165,6 +170,8 @@ const Home = () => {
                         canvas.add(img);
                         canvas.centerObject(img);
                         canvas.renderAll();
+                        var image = canvas.toDataURL("image/png");
+                        setCanvasURL(image);
                     });
 
                 }
@@ -186,6 +193,12 @@ const Home = () => {
         }
     }, [imageUrl]);
 
+    useEffect(() => {
+        if (canvasURL !== null)
+            console.log(canvasURL);
+        // document.write('<img src="' + canvasURL + '"/>');
+
+    }, [canvasURL]);
 
 
 
@@ -220,7 +233,7 @@ const Home = () => {
             </div>
             <div>
                 <ProductButtons ref={canvasImageRef}></ProductButtons>
-                <BuyCard></BuyCard>
+                <BuyCard canvasImgURL={canvasURL}></BuyCard>
             </div>
         </div>
     );
