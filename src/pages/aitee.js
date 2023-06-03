@@ -12,17 +12,9 @@ const Aitee = () => {
         >
             <div className="about-container">
                 <h1>What is AiTee?</h1><br></br>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce laoreet, erat eget efficitur tincidunt,
-                    eros diam sodales lorem, at ornare urna elit vel diam. Nunc quis urna auctor, vulputate mi at, mollis mi.
-                    Mauris et convallis massa, quis porttitor augue. Morbi egestas eleifend feugiat. In hac habitasse platea dictumst.
-                    Etiam rutrum posuere neque eu imperdiet. Vestibulum quis ligula magna. Ut ut nisl consectetur, tincidunt purus et,
-                    hendrerit elit. Nulla a consectetur elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porttitor
-                    condimentum magna, a cursus ante efficitur vitae.
-
-                    Aliquam id risus et nunc ullamcorper tempor. Nam commodo mollis porta. Donec luctus dolor et dui facilisis interdum.
-                    Ut vulputate tortor ut pretium efficitur. Nulla sit amet dolor ultricies, finibus libero et, lobortis elit. Sed commodo
-                    vel dui vel pretium. Vestibulum consectetur, neque at condimentum semper, urna purus tempor nisl, sed faucibus dolor risus
-                    in diam. In auctor placerat purus pulvinar commodo. Cras aliquam nunc eu tortor ultricies commodo. Quisque eu ligula tellus.</p>
+                <p>The aim of our project is to combine modern AI technologies, specifically GANs, and e-commerce technics to achieve unique products with AI-generated designs. 
+                    The project will be accessible through a website and in the next stages mobile development will be considered. We will apply AI-generated designs on different products such as t-shirts, socks, etc., and what makes our project 
+                    and our concept unique and interesting is that one design can only be bought by one user. This means each generated design will be displayed once to our clients.</p>
                 <br></br><h1>Meet the team!</h1>
                 <figure className="about-card">
                     <div className="profile-image"><img src="berker.jfif" alt="profile-sample2" /></div>
