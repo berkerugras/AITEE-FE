@@ -1,70 +1,97 @@
 import React, { useState } from 'react';
-import { Button, Card, Col, InputNumber, Row, Select, Typography } from 'antd';
+import { Button, Table, Space, Typography } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { DeleteOutlined } from '@ant-design/icons';
 
-const { Option } = Select;
+
 const { Title } = Typography;
 
 const CartPage = () => {
   const location = useLocation();
   const [items, setItems] = useState(location.state && location.state.items ? location.state.items : []);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedQuantity, setSelectedQuantity] = useState(1);
   const navigate = useNavigate();
 
-  const handleAddToCart = () => {
-    const newItem = {
-      size: selectedSize,
-      price: location.state?.selectedOptions.price,
-      quantity: selectedQuantity,
-    };
-    setItems([...items, newItem]);
-  };
-
-  const handleSizeChange = (value) => {
-    setSelectedSize(value);
-  };
-
-  const handleQuantityChange = (value) => {
-    setSelectedQuantity(value);
+  const handleDeleteItem = (item) => {
+    const updatedItems = items.filter((i) => i !== item);
+    setItems(updatedItems);
   };
 
   const handleCheckout = () => {
-    // Pass the items data to the checkout page
     navigate('/checkout', { state: { items } });
   };
+
+  const columns = [
+    {
+      title: 'Image',
+      dataIndex: 'image',
+      key: 'image',
+      render: (text, record) => <img src={record.canvasPicUrl} alt="" className="item-image" />,
+    },
+    {
+      title: 'Size',
+      dataIndex: 'size',
+      key: 'size',
+    },
+    {
+      title: 'Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      render: (text) => <span>${text}</span>,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+          <Button
+            type="text"
+            icon={<DeleteOutlined />}
+            onClick={() => handleDeleteItem(record)}
+          />
+        </Space>
+      ),
+    },
+  ];
 
   const totalPrice = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <div>
-      <Title level={2}>Shopping Cart</Title>
-      <Row gutter={[16, 16]}>
-        <Col span={16}>
+    <div className="cart-page">
+      <div className='shopping-cart-title'>Shopping Cart</div>
+      <div className="cart-container">
+        <div className="cart-table">
           {items.length > 0 ? (
-            items.map((item, index) => (
-              <Card key={index}>
-                <p>Size: {item.size}</p>
-                <p>Price: ${item.price}</p>
-                <p>Quantity: {item.quantity}</p>
-                <img src={item.canvasPicUrl} alt=''></img>
-              </Card>
-            ))
+            <Table
+              columns={columns}
+              dataSource={items}
+              rowKey={(record) => record.canvasPicUrl}
+              pagination={false}
+
+            />
           ) : (
-            <p>Your cart is empty</p>
+            <p className="empty-cart-message">Your cart is empty</p>
           )}
-        </Col>
-        <Col span={8}>          
-          <br />
-          <Card>
-            <h3>Cart Summary</h3>
-            <p>Total Price: ${totalPrice}</p>
-            <Button type="primary" disabled={items.length === 0} onClick={handleCheckout}>
-              Checkout
-            </Button>
-          </Card>
-        </Col>
-      </Row>     
+        </div>
+        <div className="cart-summary">
+          <h3>Cart Summary</h3>
+          <p>Total Price: ${totalPrice}</p>
+          <div
+            disabled={items.length === 0}
+            onClick={handleCheckout}
+            className="checkout-button"
+          >
+            Checkout
+          </div>
+        </div>
+      </div>
+      <div className="disclaimer-box">
+        <p>Attention! Any item you add to your cart is personal and special for you only. You may proceed to checkout but be aware that if you remove the item from your cart, it will be gone forever.</p>
+      </div>
     </div>
   );
 };

@@ -35,6 +35,7 @@ const Home = () => {
         borderRadius: "1.10rem",
         fontFamily: 'HomeFont',
         fontSize: "32px",
+        color: "#2fedd4",
     };
 
     async function generateImage() {
@@ -203,16 +204,14 @@ const Home = () => {
 
 
     return (
-
         <div style={{
             display: 'flex',
-            flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
             height: '80vh',
-            paddingTop: '10vh',
-        }}
-        >
+            paddingTop: '8vh',
+            marginLeft: '25%',
+        }}>
             <div style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -221,19 +220,31 @@ const Home = () => {
             }}>
                 <ThemeButtons ref={themeRef} />
                 <canvas id="canvas" />
-                <button style={styleButton}
+                <button className="generate-buttons"
                     onClick={generateAndAddImage}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                     hidden={isFetching}>
-                    <span style={{ color: "white" }}>Get new Image</span>
+                    <span>Get new Image</span>
                 </button>
-
-
             </div>
-            <div>
-                <ProductButtons ref={canvasImageRef}></ProductButtons>
-                <BuyCard canvasImgURL={canvasURL}></BuyCard>
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+            }}>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}>
+                    <ProductButtons ref={canvasImageRef}></ProductButtons>
+                </div>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}>
+                    <BuyCard canvasImgURL={canvasURL}></BuyCard>
+                </div>
             </div>
         </div>
     );
