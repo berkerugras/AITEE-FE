@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 
-
-
 const orderSchema = mongoose.Schema({
     userName: { type: String },
     email: { type: String },
@@ -11,7 +9,6 @@ const orderSchema = mongoose.Schema({
     age: { type: Number },
     product: { type: String },
     size: { type: String }
-
 });
 
 const OrderCollection = mongoose.model('OrderCollection', orderSchema);

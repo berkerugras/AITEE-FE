@@ -24,6 +24,7 @@ import jwt_decode from 'jwt-decode';
 import AuthContext, { AuthContextProvider } from './components/shared/AuthContext';
 import { useLocation, useHistory, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import CheckoutPage from './pages/checkout';
 
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
@@ -95,6 +96,9 @@ export default function App() {
           </Route>
           <Route path="/cart" element={<CartPage />}>
             <Route index element={<CartPage />} />
+          </Route>
+          <Route path="/checkout" element={<CheckoutPage />}>
+            <Route index element={<CheckoutPage />} />
           </Route>
           <Route path="/signup" element={<AuthSignUpWrapper />}>
             <Route index element={<SignupPage />} />

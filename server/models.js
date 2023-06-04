@@ -2,7 +2,6 @@ import { hash } from "bcrypt";
 import mongoose from "mongoose";
 
 
-
 const postSchema = mongoose.Schema({
     userName: { type: String },
     password: { type: String },
@@ -11,6 +10,7 @@ const postSchema = mongoose.Schema({
     age: { type: Number },
     phone: { type: Number }
 });
+
 
 const PostMessage = mongoose.model('PostMessage', postSchema);
 
