@@ -2,10 +2,13 @@ import PostMessage from "./models.js";
 import jwt from "jsonwebtoken"
 import bycrypt from "bcrypt";
 import OrderCollection from "./orderModel.js";
+import multer from "multer";
+import saveDataUrlImage from './storeImageService.js';
 
 const maxTime = 3 * 24 * 60 * 60; //token expirationı test etmek için bunu 10 yap
 
 const saltRounds = 10
+
 
 
 const hashPassword = async (password) => {
@@ -105,25 +108,25 @@ export const createUser = async (req, res) => {
 }
 export const updateUser = async (req, res) => {
     try {
-      const { email, userName, address, age, phone } = req.body;
-  
-      // Update the user information in the database
-      const updatedUser = await PostMessage.findOneAndUpdate(
-        { email }, // Find the user by email
-        { userName, address, age, phone }, // Update the desired fields
-        { new: true }
-      );
-  
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      res.status(200).json(updatedUser);
+        const { email, userName, address, age, phone } = req.body;
+
+        // Update the user information in the database
+        const updatedUser = await PostMessage.findOneAndUpdate(
+            { email }, // Find the user by email
+            { userName, address, age, phone }, // Update the desired fields
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json(updatedUser);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-  };
+};
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
@@ -186,23 +189,24 @@ export const refreshToken = async (req, res) => {
 export const orderProduct = async (req, res) => {
     try {
         const { userName, email, address, phone, price, age, product, size } = req.body;
-        console.log(product);
-        const registerData = {
-            userName: userName,
-            email: email,
-            address: address,
-            phone: phone,
-            price: price,
-            age: age,
-            product: product,
-            size: size
-        }
-        try {
-            await OrderCollection.insertMany([registerData])
+        const uniqueFileRoute = await saveDataUrlImage(product, userName);
 
-            const user = await OrderCollection.findOne({ userName: userName })
-            console.log(user);
-            console.log(user.product);
+        try {
+            const registerData = {
+                userName: userName,
+                email: email,
+                address: address,
+                phone: phone,
+                price: price,
+                age: age,
+                product: uniqueFileRoute,
+                size: size
+            }
+
+            await OrderCollection.insertMany([registerData])
+            const lastInsertedDocument = await OrderCollection.collection.find({}).sort({ _id: -1 }).limit(1).toArray();
+            console.log(lastInsertedDocument);
+
 
         } catch (error) {
             console.log(error);
@@ -212,39 +216,8 @@ export const orderProduct = async (req, res) => {
         res.status(200).json("Ordered successfully");
 
     } catch (e) {
+        console.log(e);
         console.log("couldn't order it");
         res.status(500).json("Cannot order")
     }
 }
-
-/*export const loginUser = async (req, res) => {
-    try {
-        const { email, password } = req.body
-        const check = await PostMessage.findOne({ email: email })
-        console.log(check._id.valueOf());
-        console.log(res);
-
-        if (check) {
-            res.json("exist");
-            const token = createToken(check._id.valueOf());
-            res.cookie("jwt", token, {
-                withCredentials: true,
-                httpOnly: false,
-                maxTime: maxTime * 1000,
-            });
-            res.session.token = { "token": token };
-            res.session.email = { "email": check.email };
-            res.session.userName = { "userName": check.userName };
-            console.log(res.session.token);
-
-        }
-
-        else {
-            res.json("not exist");
-        }
-    }
-    catch (e) {
-        console.log(e);
-        res.json("error and not exist")
-    }
-}*/
