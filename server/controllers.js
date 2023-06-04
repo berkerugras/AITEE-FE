@@ -103,7 +103,27 @@ export const createUser = async (req, res) => {
 
     }
 }
-
+export const updateUser = async (req, res) => {
+    try {
+      const { email, userName, address, age, phone } = req.body;
+  
+      // Update the user information in the database
+      const updatedUser = await PostMessage.findOneAndUpdate(
+        { email }, // Find the user by email
+        { userName, address, age, phone }, // Update the desired fields
+        { new: true }
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 export const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
