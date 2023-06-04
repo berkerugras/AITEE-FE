@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Table, Space, Typography } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { DeleteOutlined } from '@ant-design/icons';
+import axios from "axios";
 
 
 const { Title } = Typography;
@@ -15,8 +16,40 @@ const CartPage = () => {
     const updatedItems = items.filter((i) => i !== item);
     setItems(updatedItems);
   };
+  async function handleCheckout(e) {
+    e.preventDefault();
+    const localStorageJSON = JSON.parse(localStorage.getItem('userData'));
+    const email = localStorageJSON.email
+    const userName = localStorageJSON.userName
+    const address = localStorageJSON.address
+    const age = localStorageJSON.age
+    const phone = localStorageJSON.phone
+    const price = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const size = items[0].size
+    const product = items[0].canvasPicUrl;
+    console.log(product);
 
-  const handleCheckout = () => {
+    try {
+      await axios.post("http://localhost:5000/posts/order-product", {
+        userName,
+        email,
+        address,
+        phone,
+        price,
+        age,
+        product,
+        size
+
+
+      }, {
+        withCredentials: true
+      }).then((res) => {
+        console.log(res);
+      })
+    } catch (e) {
+
+    }
+
     navigate('/checkout', { state: { items } });
   };
 
@@ -80,13 +113,13 @@ const CartPage = () => {
         <div className="cart-summary">
           <h3>Cart Summary</h3>
           <p>Total Price: ${totalPrice}</p>
-          <div
+          <Button
             disabled={items.length === 0}
             onClick={handleCheckout}
             className="checkout-button"
           >
             Checkout
-          </div>
+          </Button>
         </div>
       </div>
       <div className="disclaimer-box">

@@ -1,7 +1,7 @@
 import PostMessage from "./models.js";
 import jwt from "jsonwebtoken"
 import bycrypt from "bcrypt";
-
+import OrderCollection from "./orderModel.js";
 
 const maxTime = 3 * 24 * 60 * 60; //token expirationı test etmek için bunu 10 yap
 
@@ -160,6 +160,40 @@ export const refreshToken = async (req, res) => {
     } catch (e) {
         console.log("couldn't refresh it");
         res.status(500).json("not exist")
+    }
+}
+
+export const orderProduct = async (req, res) => {
+    try {
+        const { userName, email, address, phone, price, age, product, size } = req.body;
+        console.log(product);
+        const registerData = {
+            userName: userName,
+            email: email,
+            address: address,
+            phone: phone,
+            price: price,
+            age: age,
+            product: product,
+            size: size
+        }
+        try {
+            await OrderCollection.insertMany([registerData])
+
+            const user = await OrderCollection.findOne({ userName: userName })
+            console.log(user);
+            console.log(user.product);
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+        res.status(200).json("Ordered successfully");
+
+    } catch (e) {
+        console.log("couldn't order it");
+        res.status(500).json("Cannot order")
     }
 }
 
