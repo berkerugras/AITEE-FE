@@ -14,42 +14,11 @@ const CartPage = () => {
 
   const handleDeleteItem = (item) => {
     const updatedItems = items.filter((i) => i !== item);
+    window.history.replaceState({}, document.title)
     setItems(updatedItems);
   };
   async function handleCheckout(e) {
     e.preventDefault();
-    const localStorageJSON = JSON.parse(localStorage.getItem('userData'));
-    const email = localStorageJSON.email
-    const userName = localStorageJSON.userName
-    const address = localStorageJSON.address
-    const age = localStorageJSON.age
-    const phone = localStorageJSON.phone
-    const price = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    const size = items[0].size
-    const product = items[0].canvasPicUrl;
-    console.log(product);
-
-    try {
-      await axios.post("http://localhost:5000/posts/order-product", {
-        userName,
-        email,
-        address,
-        phone,
-        price,
-        age,
-        product,
-        size
-
-
-      }, {
-        withCredentials: true
-      }).then((res) => {
-        console.log(res);
-      })
-    } catch (e) {
-
-    }
-
     navigate('/checkout', { state: { items } });
   };
 

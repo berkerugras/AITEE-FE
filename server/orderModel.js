@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 const orderSchema = mongoose.Schema({
+    name: { type: String },
+    lastname: { type: String },
+    note: { type: String },
     userName: { type: String },
     email: { type: String },
     address: { type: String },

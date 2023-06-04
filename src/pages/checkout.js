@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Result, Input, Form, Typography } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const { TextArea } = Input;
 const { Title } = Typography;
@@ -16,13 +17,55 @@ const CheckoutPage = () => {
         history.goBack();
     };
 
-    const handlePayment = () => {
-        form.validateFields().then((values) => {
-            // Perform payment logic here using the form values
-            // You can show a loading state while processing the payment
-            console.log(values); // Access the form values here
-            setCheckoutStatus('success'); // or 'error' if payment fails
-        });
+    async function handlePayment() {
+        const localStorageJSON = JSON.parse(localStorage.getItem('userData'));
+        const email = localStorageJSON.email
+        const userName = localStorageJSON.userName
+        const age = localStorageJSON.age
+        const price = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        const size = items[0].size
+        const product = items[0].canvasPicUrl;
+
+        let note = "";
+        let name = "";
+        let lastname = "";
+        let address = localStorageJSON.address;
+        let phone = localStorageJSON.phone;
+
+
+        form.validateFields()
+            .then((values) => {
+                note = values.note;
+                name = values.name;
+                lastname = values.lastname;
+                address = values.address;
+                phone = values.phone;
+                console.log(values);
+                setCheckoutStatus('success');
+
+                axios.post("http://localhost:5000/posts/order-product", {
+                    name,
+                    lastname,
+                    note,
+                    userName,
+                    email,
+                    address,
+                    phone,
+                    price,
+                    age,
+                    product,
+                    size
+                }, {
+                    withCredentials: true
+                }).then((res) => {
+                    console.log(res);
+                }).catch((error) => {
+                    console.log(error);
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     const totalPrice = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -38,9 +81,27 @@ const CheckoutPage = () => {
                         <Form form={form}>
                             <Title level={4}>Shipping Information</Title>
                             <Form.Item
+                                name="username"
+                                label="User Name"
+                                rules={[{ required: true }]}
+                                initialValue={JSON.parse(localStorage.getItem('userData')).userName}
+
+                            >
+                                <Input disabled={true} />
+                            </Form.Item>
+                            <Form.Item
                                 name="name"
                                 label="Name"
                                 rules={[{ required: true, message: 'Please enter your name' }]}
+
+                            >
+                                <Input />
+                            </Form.Item>
+                            <Form.Item
+                                name="lastname"
+                                label="Lastname"
+                                rules={[{ required: true, message: 'Please enter your lastname' }]}
+
                             >
                                 <Input />
                             </Form.Item>
@@ -48,6 +109,8 @@ const CheckoutPage = () => {
                                 name="address"
                                 label="Address"
                                 rules={[{ required: true, message: 'Please enter your address' }]}
+                                initialValue={JSON.parse(localStorage.getItem('userData')).address}
+
                             >
                                 <Input />
                             </Form.Item>
@@ -55,6 +118,8 @@ const CheckoutPage = () => {
                                 name="phone"
                                 label="Phone Number"
                                 rules={[{ required: true, message: 'Please enter your phone number' }]}
+                                initialValue={JSON.parse(localStorage.getItem('userData')).phone}
+
                             >
                                 <Input />
                             </Form.Item>

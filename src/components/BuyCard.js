@@ -20,22 +20,29 @@ const SizeOptions = ({ onSizeChange }) => {
   );
 };
 
-const TypeOptions = ({ onTypeChange, onPriceChange }) => {
-  const handleTypeChange = (e) => {
-    const type = e.target.value;
+const TypeOptions = ({ onTypeChange, onPriceChange, canvasIMG }) => {
+  // const handleTypeChange = (e) => {
+  //   console.log(canvasIMG);
+  //   const type = e.target.value;
+
+  // };
+
+  useEffect(() => {
     const price = {
       't-shirt': 10,
       sweatshirt: 20,
       shorts: 30,
-    }[type];
-    onTypeChange(type);
+    }[canvasIMG];
     onPriceChange(price);
-  };
+    onTypeChange(canvasIMG);
+
+
+  }, [canvasIMG])
 
   return (
     <>
       <h3>Type:</h3>
-      <Radio.Group onChange={handleTypeChange}>
+      <Radio.Group value={canvasIMG}>
         <Radio.Button value="t-shirt">T-Shirt ($10)</Radio.Button>
         <Radio.Button value="sweatshirt">Sweatshirt ($20)</Radio.Button>
         <Radio.Button value="shorts">Shorts ($30)</Radio.Button>
@@ -44,22 +51,29 @@ const TypeOptions = ({ onTypeChange, onPriceChange }) => {
   );
 };
 
-const AntdCard = ({ canvasImgURL }) => {
+const AntdCard = ({ canvasImgURL, canvasIMG }) => {
   const [size, setSize] = useState(null);
   const [type, setType] = useState(null);
   const [price, setPrice] = useState(null);
   const [canvasPicUrl, setCanvasPicUrl] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     setCanvasPicUrl(canvasImgURL)
   }, [canvasImgURL])
+
   useEffect(() => {
-    console.log(canvasPicUrl)
-  }, [canvasPicUrl])
+    if (canvasIMG === "BT")
+      setType("t-shirt");
+    else
+      setType("sweatshirt");
+  }, [canvasIMG])
+
   const handleSizeChange = (selectedSize) => {
     setSize(selectedSize);
   };
+
 
   const handleTypeChange = (selectedType) => {
     setType(selectedType);
@@ -90,7 +104,7 @@ const AntdCard = ({ canvasImgURL }) => {
   return (
     <Card title="Product Card">
       <SizeOptions onSizeChange={handleSizeChange} />
-      <TypeOptions onTypeChange={handleTypeChange} onPriceChange={handlePriceChange} />
+      <TypeOptions onTypeChange={handleTypeChange} onPriceChange={handlePriceChange} canvasIMG={type} />
       <Button
         style={{ marginTop: '20px' }}
         type="primary"

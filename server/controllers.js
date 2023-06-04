@@ -189,11 +189,14 @@ export const refreshToken = async (req, res) => {
 
 export const orderProduct = async (req, res) => {
     try {
-        const { userName, email, address, phone, price, age, product, size } = req.body;
+        const { name, lastname, note, userName, email, address, phone, price, age, product, size } = req.body;
         const uniqueFileRoute = await saveDataUrlImage(product, userName);
 
         try {
             const registerData = {
+                name: name,
+                lastname: lastname,
+                note: note,
                 userName: userName,
                 email: email,
                 address: address,

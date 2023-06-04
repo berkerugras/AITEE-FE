@@ -243,7 +243,7 @@ const Home = () => {
                     display: 'flex',
                     justifyContent: 'flex-end',
                 }}>
-                    <BuyCard canvasImgURL={canvasURL}></BuyCard>
+                    <BuyCard canvasIMG={canvasImage} canvasImgURL={canvasURL}></BuyCard>
                 </div>
             </div>
         </div>
