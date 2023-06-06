@@ -9,7 +9,13 @@ async function saveDataUrlImage(dataUrl, userName, marketplaceFlag) {
     try {
         const base64Data = dataUrl.replace(/^data:image\/png;base64,/, "");
         const uniqueImage = "uniqueImage-" + Date.now().toString() + "-" + userName + ".png";
-        const path = __dirname + "/public/ordered-images/" + uniqueImage;
+        let path = ""
+        if (marketplaceFlag) {
+            path = __dirname + "/public/marketplace-images/" + uniqueImage;
+        }
+        else {
+            path = __dirname + "/public/ordered-images/" + uniqueImage;
+        }
         await fs.promises.writeFile(path, base64Data, 'base64');
         console.log('Image saved successfully:', uniqueImage);
         if (marketplaceFlag) {

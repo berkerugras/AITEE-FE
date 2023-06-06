@@ -3,9 +3,9 @@ import jwt from "jsonwebtoken"
 import bycrypt from "bcrypt";
 import OrderCollection from "./orderModel.js";
 import marketCollection from "./marketplaceModel.js";
-
 import multer from "multer";
 import saveDataUrlImage from './storeImageService.js';
+import mongoose from "mongoose";
 
 const maxTime = 3 * 24 * 60 * 60; //token expirationı test etmek için bunu 10 yap
 
@@ -36,7 +36,7 @@ export const getPosts = async (req, res) => {
     try {
         const postMessages = await PostMessage.find();
 
-        console.log(postMessages);
+        // console.log(postMessages);
 
         res.status(200).json(postMessages);
     } catch (error) {
@@ -59,7 +59,7 @@ export const createUser = async (req, res) => {
             age: age,
             phone: phone
         }
-        console.log([registerData]);
+        // console.log([registerData]);
         const user = await PostMessage.findOne({ email: email })
 
         if (user) {
@@ -71,7 +71,7 @@ export const createUser = async (req, res) => {
             try {
                 await PostMessage.insertMany([registerData])
                 const new_user = await PostMessage.findOne({ email: email })
-                console.log(new_user);
+                // console.log(new_user);
                 const token = createToken(new_user._id.valueOf());
                 res.cookie("jwt", token, {
                     withCredentials: true,
@@ -95,7 +95,7 @@ export const createUser = async (req, res) => {
             catch {
                 await PostMessage.deleteMany(registerData)
                 const new_user = await PostMessage.findOne({ email: email })
-                console.log(new_user);
+                // console.log(new_user);
                 res.status(500).json("not exist")
 
             }
@@ -138,7 +138,7 @@ export const loginUser = async (req, res) => {
 
         if (isValidPassword) {
             const token = createToken(user._id.valueOf());
-            console.log(token);
+            // console.log(token);
             const options = {
                 maxTime: new Date(Date.now() + maxTime) * 1000,
                 httpOnly: true
@@ -211,7 +211,7 @@ export const orderProduct = async (req, res) => {
 
             await OrderCollection.insertMany([registerData])
             const lastInsertedDocument = await OrderCollection.collection.find({}).sort({ _id: -1 }).limit(1).toArray();
-            console.log(lastInsertedDocument);
+            // console.log(lastInsertedDocument);
 
 
         } catch (error) {
@@ -253,7 +253,7 @@ export const putProductInMarket = async (req, res) => {
 
             await marketCollection.insertMany([registerData])
             const lastInsertedDocument = await marketCollection.collection.find({}).sort({ _id: -1 }).limit(1).toArray();
-            console.log(lastInsertedDocument);
+            // console.log(lastInsertedDocument);
 
 
         } catch (error) {
@@ -273,25 +273,11 @@ export const putProductInMarket = async (req, res) => {
 
 export const getAllTheDocumentInMarketPlace = async (req, res) => {
     try {
-
-
-        try {
-
-            var allDocuments = await marketCollection.find({})
-            // const lastInsertedDocument = await marketCollection.collection.find({}).sort({ _id: -1 }).limit(1).toArray();
-            // console.log(lastInsertedDocument);
-
-            res.status(200).json(allDocuments);
-        } catch (error) {
-            console.log(error);
-        }
-
-
-        res.status(200).json("Ordered successfully");
-
-    } catch (e) {
-        console.log(e);
-        console.log("couldn't order it");
-        res.status(500).json("Cannot order")
+        const marketDocuments = await marketCollection.find({});
+        console.log(marketDocuments);
+        res.status(200).json(marketDocuments);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Failed to retrieve market collections");
     }
-}
+};

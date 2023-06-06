@@ -1,7 +1,25 @@
 import { Card, Col, Row } from 'antd';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Marketplace = () => {
-  const products = [
+  const [products, setProduct] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/posts/get-all-documents").then((res) => {
+      setProduct(res.data);
+      console.log(JSON.stringify(res.data));
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(products.length)
+
+  }, []);
+
+
+
+  const productsa = [
     { image: 'https://via.placeholder.com/150x150', price: 10 },
     { image: 'https://via.placeholder.com/150x150', price: 15 },
     { image: 'https://via.placeholder.com/150x150', price: 20 },
