@@ -17,9 +17,15 @@ const CartPage = () => {
     window.history.replaceState({}, document.title)
     setItems(updatedItems);
   };
+
   async function handleCheckout(e) {
     e.preventDefault();
     navigate('/checkout', { state: { items } });
+  };
+
+  async function handleMarketplace(e) {
+    e.preventDefault();
+    navigate('/list-item', { state: { items } });
   };
 
   const columns = [
@@ -88,6 +94,13 @@ const CartPage = () => {
             className="checkout-button"
           >
             Checkout
+          </Button>
+          <Button
+            disabled={items.length === 0}
+            onClick={handleMarketplace}
+            className="checkout-button"
+          >
+            List on Marketplace
           </Button>
         </div>
       </div>

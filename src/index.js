@@ -25,6 +25,7 @@ import AuthContext, { AuthContextProvider } from './components/shared/AuthContex
 import { useLocation, useHistory, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import CheckoutPage from './pages/checkout';
+import ListingPage from './pages/list';
 
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
@@ -108,6 +109,9 @@ export default function App() {
           </Route>
           <Route path="/market" element={<Marketplace />}>
             <Route index element={<Marketplace />} />
+          </Route>
+          <Route path="/list-item" element={<ListingPage />}>
+            <Route index element={<ListingPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
