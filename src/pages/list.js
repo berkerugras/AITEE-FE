@@ -26,9 +26,8 @@ const ListingPage = () => {
         const size = items[0].size
         const product = items[0].canvasPicUrl;
 
+        let listing_price = "";
         let note = "";
-        let name = "";
-        let lastname = "";
         let address = localStorageJSON.address;
         let phone = localStorageJSON.phone;
 
@@ -36,22 +35,18 @@ const ListingPage = () => {
         form.validateFields()
             .then((values) => {
                 note = values.note;
-                name = values.name;
-                lastname = values.lastname;
-                address = values.address;
-                phone = values.phone;
+                listing_price = values.newprice
                 console.log(values);
                 setCheckoutStatus('success');
 
-                axios.post("http://localhost:5000/posts/order-product", {
-                    name,
-                    lastname,
+                axios.post("http://localhost:5000/posts/market-product", {
                     note,
                     userName,
                     email,
                     address,
                     phone,
                     price,
+                    listing_price,
                     age,
                     product,
                     size
@@ -91,11 +86,11 @@ const ListingPage = () => {
 
                             <Form.Item
                                 name="newprice"
-                                label="Listing Price"
+                                label="Listing Price ($)"
                                 rules={[{ required: true, message: 'Please enter the new price for this item' }]}
-                                initialValue="30$"
+                                initialValue="30"
                             >
-                                <Input />
+                                <Input type="number" />
                             </Form.Item>
 
                             <Form.Item name="note" label="Note">

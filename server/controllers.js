@@ -2,6 +2,8 @@ import PostMessage from "./models.js";
 import jwt from "jsonwebtoken"
 import bycrypt from "bcrypt";
 import OrderCollection from "./orderModel.js";
+import marketCollection from "./marketplaceModel.js";
+
 import multer from "multer";
 import saveDataUrlImage from './storeImageService.js';
 
@@ -190,7 +192,7 @@ export const refreshToken = async (req, res) => {
 export const orderProduct = async (req, res) => {
     try {
         const { name, lastname, note, userName, email, address, phone, price, age, product, size } = req.body;
-        const uniqueFileRoute = await saveDataUrlImage(product, userName);
+        const uniqueFileRoute = await saveDataUrlImage(product, userName, false);
 
         try {
             const registerData = {
@@ -212,6 +214,74 @@ export const orderProduct = async (req, res) => {
             console.log(lastInsertedDocument);
 
 
+        } catch (error) {
+            console.log(error);
+        }
+
+
+        res.status(200).json("Ordered successfully");
+
+    } catch (e) {
+        console.log(e);
+        console.log("couldn't order it");
+        res.status(500).json("Cannot order")
+    }
+}
+
+
+export const putProductInMarket = async (req, res) => {
+    try {
+        const { note, userName, email, address, phone, price, listing_price, age, product, size } = req.body;
+        console.log(req, "bu bir");
+        const uniqueFileRoute = await saveDataUrlImage(product, userName, true);
+
+        try {
+            const registerData = {
+                note: note,
+                userName: userName,
+                email: email,
+                address: address,
+                phone: phone,
+                price: price,
+                listing_price: listing_price,
+                age: age,
+                product: uniqueFileRoute,
+                size: size
+            }
+            console.log(registerData, "register data");
+
+
+            await marketCollection.insertMany([registerData])
+            const lastInsertedDocument = await marketCollection.collection.find({}).sort({ _id: -1 }).limit(1).toArray();
+            console.log(lastInsertedDocument);
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+        res.status(200).json("Ordered successfully");
+
+    } catch (e) {
+        console.log(e);
+        console.log("couldn't order it");
+        res.status(500).json("Cannot order")
+    }
+}
+
+
+export const getAllTheDocumentInMarketPlace = async (req, res) => {
+    try {
+
+
+        try {
+
+            var allDocuments = await marketCollection.find({})
+            // const lastInsertedDocument = await marketCollection.collection.find({}).sort({ _id: -1 }).limit(1).toArray();
+            // console.log(lastInsertedDocument);
+
+            res.status(200).json(allDocuments);
         } catch (error) {
             console.log(error);
         }
