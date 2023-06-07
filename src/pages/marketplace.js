@@ -1,9 +1,11 @@
 import { Card, Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Marketplace = () => {
   const [products, setProduct] = useState([]);
+  const history = useNavigate();
   const productsa = [
     { image: 'https://via.placeholder.com/150x150', price: 10 },
     { image: 'https://via.placeholder.com/150x150', price: 15 },
@@ -34,39 +36,47 @@ const Marketplace = () => {
     products.push({ image: '', price: '' });
   }
 
-  function checkIfProductsEmpty() {
-    if (products.length === 0) {
-      return <div style={{ padding: '24px' }}>
-        <h1>Marketplace</h1>
-      </div>
-    }
-    else {
-      return <div style={{ padding: '24px' }}>
-        <h1>Marketplace</h1>
-        <Row gutter={[16, 16]}>
-          {products.map((product, index) => (
-            <Col key={index} span={4}>
-              {product.product ? (
-                <Card
-                  hoverable
-                  cover={<img alt="product" src={"http://localhost:5000" + product.product} />}
-                >
-                  <Card.Meta
-                    title={`Product ${index + 1}`}
-                  />
-                  <p>$ {product.price}</p>
-                  <p>{product.userName}</p>
-                </Card>
-              ) : null}
-            </Col>
-          ))}
-          {/* Add an empty card to fill the last row if necessary */}
-          {products.length % 5 !== 0 && <Col span={4} />}
-        </Row>
-      </div>
-    }
-  }
+  // function checkIfProductsEmpty() {
+  //   if (products.length === 0) {
+  //     return <div style={{ padding: '24px' }}>
+  //       <h1>Marketplace</h1>
+  //     </div>
+  //   }
+  //   else {
+  //     return <div style={{ padding: '24px' }}>
+  //       <h1>Marketplace</h1>
+  //       <Row gutter={[16, 16]}>
+  //         {products.map((product, index) => (
+  //           <Col key={index} span={4}>
+  //             {product.product ? (
+  //               <Card
+  //                 hoverable
+  //                 cover={<img alt="product" src={"http://localhost:5000" + product.product} />}
+  //               >
+  //                 <Card.Meta
+  //                   title={`Product ${index + 1}`}
+  //                 />
+  //                 <p>$ {product.price}</p>
+  //                 <p>{product.userName}</p>
+  //               </Card>
+  //             ) : null}
+  //           </Col>
+  //         ))}
+  //         {/* Add an empty card to fill the last row if necessary */}
+  //         {products.length % 5 !== 0 && <Col span={4} />}
+  //       </Row>
+  //     </div>
+  //   }
+  // }
+  function goPDP(param) {
+    console.log(param.listing_price);
+    const newItem = {
+      price: param.listing_price,
+      product: "http://localhost:5000" + param.product
 
+    };
+    history('/buy-market-item', { state: [newItem] });
+  };
 
   return (
     <div style={{ padding: '24px' }}>
@@ -75,6 +85,7 @@ const Marketplace = () => {
           <Col key={index} span={4}>
             {product.product ? (
               <Card
+                onClick={() => { goPDP(product) }}
                 hoverable
                 cover={<img alt="product" src={"http://localhost:5000" + product.product} />}
               >
