@@ -15,6 +15,7 @@ const ProductDetailPage = () => {
     const [checkoutStatus, setCheckoutStatus] = useState('processing');
     const [form] = Form.useForm();
     const [formSize] = Form.useForm();
+    const [selectedSize, setSelectedSize] = useState("Medium");
 
     console.log(items);
     const handleBackToCart = () => {
@@ -26,11 +27,12 @@ const ProductDetailPage = () => {
         const localStorageJSON = JSON.parse(localStorage.getItem('userData'));
         const email = localStorageJSON.email
         const userName = localStorageJSON.userName
-        const age = localStorageJSON.age
-        const price = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        const size = items[0].size
-        const product = items[0].canvasPicUrl;
+        const price = items.price;
+        const product = items.product;
 
+
+        let size = ""
+        let sellerName = "";
         let note = "";
         let name = "";
         let lastname = "";
@@ -40,13 +42,37 @@ const ProductDetailPage = () => {
 
         form.validateFields()
             .then((values) => {
-                note = values.note;
+                size = selectedSize;
+                sellerName = values.sellername
                 name = values.name;
                 lastname = values.lastname;
+                console.log(lastname);
+                note = values.note;
                 address = values.address;
                 phone = values.phone;
                 console.log(values);
                 setCheckoutStatus('success');
+
+                axios.post("http://localhost:5000/posts/buy-market-product", {
+                    sellerName,
+                    userName,
+                    name,
+                    lastname,
+                    email,
+                    address,
+                    phone,
+                    price,
+                    note,
+                    product,
+                    size
+                }, {
+                    withCredentials: true
+                }).then((res) => {
+                    console.log(res);
+                }).catch((error) => {
+                    console.log(error);
+                });
+
 
             })
             .catch((error) => {
@@ -66,6 +92,16 @@ const ProductDetailPage = () => {
                         <p>Total Price: ${totalPrice}</p>
                         <Form form={form}>
                             <Title level={4}>Shipping Information</Title>
+                            <Form.Item
+                                name="sellername"
+                                label="Seler Name"
+                                rules={[{ required: true }]}
+                                initialValue={items.productUserName}
+
+                            >
+                                <Input disabled={true} />
+                            </Form.Item>
+
                             <Form.Item
                                 name="username"
                                 label="User Name"
@@ -123,24 +159,23 @@ const ProductDetailPage = () => {
                             <li>
                                 <img style={{ width: "25rem" }} src={items.product} alt="" className="checkout-item-image" />
                                 <div style={{ fontSize: "x-large", fontWeight: "bold" }}>Price: ${items.price}</div>
-                                <Form form={formSize}>
-                                    <Form.Item name="size">
-                                        <p style={{
-                                            marginTop: "1rem",
-                                            fontSize: "1rem",
-                                            fontWeight: "bold"
-                                        }}>Select Size</p>
-                                        <Select style={{
-                                            marginTop: "1rem",
-                                            width: "10rem"
-                                        }} defaultValue="Medium">
-                                            <Select.Option value="Small">Small</Select.Option>
-                                            <Select.Option value="Medium">Medium</Select.Option>
-                                            <Select.Option value="Large">Large</Select.Option>
-                                            <Select.Option value="XLarge">XLarge</Select.Option>
-                                        </Select>
-                                    </Form.Item>
-                                </Form>
+                                <p style={{
+                                    marginTop: "1rem",
+                                    fontSize: "1rem",
+                                    fontWeight: "bold"
+                                }}>Select Size</p>
+                                <Select style={{
+                                    marginTop: "1rem",
+                                    width: "10rem"
+                                }}
+                                    defaultValue={selectedSize}
+                                    onChange={setSelectedSize}
+                                >
+                                    <Select.Option value="Small">Small</Select.Option>
+                                    <Select.Option value="Medium">Medium</Select.Option>
+                                    <Select.Option value="Large">Large</Select.Option>
+                                    <Select.Option value="XLarge">XLarge</Select.Option>
+                                </Select>
                             </li>
                         </ul>
                     </div>

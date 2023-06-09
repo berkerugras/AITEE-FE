@@ -72,7 +72,8 @@ const Marketplace = () => {
     console.log(param.listing_price);
     const newItem = {
       price: param.listing_price,
-      product: "http://localhost:5000" + param.product
+      product: "http://localhost:5000" + param.product,
+      productUserName: param.userName
 
     };
     history('/buy-market-item', { state: [newItem] });

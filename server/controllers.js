@@ -6,6 +6,9 @@ import marketCollection from "./marketplaceModel.js";
 import multer from "multer";
 import saveDataUrlImage from './storeImageService.js';
 import mongoose from "mongoose";
+import BuyFromMarketCollection from "./buyFromMarketModel.js";
+import getImageService from "./getImageService.js";
+import saveDataUrlAndDeletePrevious from "./saveAndDeleteImage.js";
 
 const maxTime = 3 * 24 * 60 * 60; //token expirationı test etmek için bunu 10 yap
 
@@ -281,3 +284,49 @@ export const getAllTheDocumentInMarketPlace = async (req, res) => {
         res.status(500).json("Failed to retrieve market collections");
     }
 };
+
+
+export const buyFromProduct = async (req, res) => {
+    try {
+        const { sellerName, userName, name, lastname, email, address, phone, price, note, product, size } = req.body;
+        const dataUrl = await getImageService(product);
+        console.log(dataUrl);
+        const uniqueFileRoute = await saveDataUrlAndDeletePrevious(dataUrl, userName, sellerName, product);
+        console.log(uniqueFileRoute);
+        const filtePathToBeDeleted = product.replace('http://localhost:5000/images', '/images');
+        try {
+            const registerData = {
+                sellerName: sellerName,
+                name: name,
+                lastname: lastname,
+                note: note,
+                userName: userName,
+                email: email,
+                address: address,
+                phone: phone,
+                price: price,
+                product: uniqueFileRoute,
+                size: size
+            }
+            console.log(registerData);
+            await BuyFromMarketCollection.insertMany([registerData])
+            const lastInsertedDocument = await BuyFromMarketCollection.collection.find({}).sort({ _id: -1 }).limit(1).toArray();
+            console.log(lastInsertedDocument);
+            try {
+                await marketCollection.deleteOne({ product: filtePathToBeDeleted })
+            } catch (err) {
+                console.log(err);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+
+        res.status(200).json("Ordered successfully");
+
+    } catch (e) {
+        console.log(e);
+        console.log("couldn't order it");
+        res.status(500).json("Cannot order")
+    }
+}

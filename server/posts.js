@@ -1,5 +1,5 @@
 import express from 'express';
-import { getPosts, createUser, loginUser, refreshToken, orderProduct, updateUser, putProductInMarket, getAllTheDocumentInMarketPlace } from './controllers.js';
+import { getPosts, createUser, loginUser, refreshToken, orderProduct, updateUser, putProductInMarket, getAllTheDocumentInMarketPlace,buyFromProduct } from './controllers.js';
 
 // import { getPosts, getPost, createPost, updatePost, likePost, deletePost } from '../controllers/posts.js';
 
@@ -15,6 +15,7 @@ router.post('/refresh-token', refreshToken);
 router.post('/order-product', orderProduct);
 router.post('/market-product', putProductInMarket);
 router.put('/update', updateUser)
+router.post('/buy-market-product', buyFromProduct);
 
 // router.patch('/:id', updatePost);
 // router.delete('/:id', deletePost);
