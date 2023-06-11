@@ -11,7 +11,7 @@ const ProfilePage = () => {
   const isSmallScreen = screens.xs || screens.sm;
   const gridLayout = isSmallScreen ? { span: 24 } : { span: 12, offset: 2 };
 
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState('./profilepicture.jpg'); // Set the default image path here
   const [editMode, setEditMode] = useState(false);
   const [form] = Form.useForm();
 
@@ -19,22 +19,6 @@ const ProfilePage = () => {
     setEditMode(!editMode);
   };
 
-  const handleImageUpload = (info) => {
-    const { file } = info;
-
-    // Check if the uploaded file is a JPG
-    if (file.type !== 'image/jpeg') {
-      message.error('Please upload a JPG file.');
-      return;
-    }
-
-    // Read the uploaded file
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setProfileImage(e.target.result);
-    };
-    reader.readAsDataURL(file);
-  };
 
   const handleSaveChanges = () => {
     const email = JSON.parse(localStorage.getItem("userData")).email;
@@ -82,18 +66,7 @@ const ProfilePage = () => {
                 )}
               </div>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Upload
-                accept=".jpg,.jpeg"
-                showUploadList={false}
-                beforeUpload={(file) => false}
-                onChange={handleImageUpload}
-              >
-                <Button icon={<UploadOutlined />} disabled={!editMode}>
-                  Edit
-                </Button>
-              </Upload>
-            </div>
+            
           </Col>
           <Col span={18}>
             {editMode ? (
