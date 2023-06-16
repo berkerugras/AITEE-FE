@@ -5,6 +5,7 @@ import ThemeButtons from '../components/ThemeButtons';
 import BuyCard from '../components/BuyCard';
 import ProductButtons from '../components/ProductButtons';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Modal } from 'react-bootstrap';
 const Home = () => {
     const location = useLocation()
 
@@ -18,6 +19,7 @@ const Home = () => {
     const [canvasImage, setCanvasImage] = useState(null);
     const [canvasURL, setCanvasURL] = useState(null);
 
+    const [isImageOpen, setIsImageOpen] = useState(false);
 
     const handleMouseEnter = () => {
         setHovered(true);
@@ -25,6 +27,10 @@ const Home = () => {
 
     const handleMouseLeave = () => {
         setHovered(false);
+    };
+    const handleCanvasClick = () => {
+        console.log(!isImageOpen);
+        setIsImageOpen(!isImageOpen);
     };
 
     const styleButton = {
@@ -220,13 +226,23 @@ const Home = () => {
             }}>
                 <ThemeButtons ref={themeRef} />
                 <canvas id="canvas" />
-                <button className="generate-buttons"
-                    onClick={generateAndAddImage}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    hidden={isFetching}>
-                    <span>Get new Image</span>
-                </button>
+                <div style={{
+                    display: 'flex',
+                    gap: "1rem"
+
+                }}>
+                    <button className="generate-buttons"
+                        onClick={generateAndAddImage}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        hidden={isFetching}>
+                        <span>Get new Image</span>
+                    </button>
+                    <button className="generate-buttons"
+                        onClick={handleCanvasClick}>
+                        <span>Maximize Image</span>
+                    </button>
+                </div>
             </div>
             <div style={{
                 display: 'flex',
@@ -246,7 +262,34 @@ const Home = () => {
                     <BuyCard canvasIMG={canvasImage} canvasImgURL={canvasURL}></BuyCard>
                 </div>
             </div>
+            {isImageOpen && (
+                <div
+                    style={{
+                        backgroundColor: "rgba(115, 114, 114, 0.5)",
+                        width: "100%",
+                        height: "100%",
+                        zIndex: 10,
+                        top: 0,
+                        left: 0,
+                        position: "fixed",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <button aria-label="Close" onClick={() => {
+                        setIsImageOpen(!isImageOpen)
+                    }} style={{ position: "absolute", top: "1.5rem", right: "1.5rem", background: "transparent", border: "none", fontSize: "3rem", cursor: "pointer" }}>x</button>
+                    <img src={imageUrl} alt=""
+                        style={{
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                        }} />
+                </div>
+            )}
         </div>
+
+
     );
 };
 
