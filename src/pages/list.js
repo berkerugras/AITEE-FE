@@ -67,9 +67,8 @@ const ListingPage = () => {
 
     return (
         <div className="checkout-page">
-            <div className="checkout-title">List item on Marketplace</div>
             {checkoutStatus === 'processing' && (
-                <div className="checkout-container">
+                <div className="checkout-container" style={{ marginTop: "3rem" }}>
                     <div className="checkout-summary">
                         <h3>Summary</h3>
                         <p>To be paid: ${totalPrice}</p>
@@ -96,21 +95,22 @@ const ListingPage = () => {
                             <Form.Item name="note" label="Note">
                                 <TextArea rows={4} />
                             </Form.Item>
-                            <Button type="primary" onClick={handlePayment}>
-                                Proceed to Payment
-                            </Button>
-                            <Button onClick={handleBackToCart}>Back to Cart</Button>
+                            <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}>
+                                <Button type="primary" onClick={handlePayment}>
+                                    Proceed to Payment
+                                </Button>
+                                <Button onClick={handleBackToCart}>Back to Cart</Button>
+                            </div>
                         </Form>
                     </div>
                     <div className="checkout-items">
-                        <h2>Items:</h2>
-                        <ul>
+                        <ul style={{ listStyleType: "none" }}>
                             {items.map((item, index) => (
                                 <li key={index}>
-                                    <img src={item.canvasPicUrl} alt="" className="checkout-item-image" />
-                                    <div>Size: {item.size}</div>
-                                    <div>Quantity: {item.quantity}</div>
-                                    <div>Price: ${item.price}</div>
+                                    <img style={{ width: "25rem" }} src={item.canvasPicUrl} alt="" className="checkout-item-image" />
+                                    <div><span style={{ fontWeight: "bold" }}>Size:</span> {item.size}</div>
+                                    <div><span style={{ fontWeight: "bold" }}>Quantity:</span> {item.quantity}</div>
+                                    <div><span style={{ fontWeight: "bold" }}>Price:</span> ${item.price}</div>
                                 </li>
                             ))}
                         </ul>
