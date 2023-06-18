@@ -118,8 +118,8 @@ export const updateUser = async (req, res) => {
 
         // Update the user information in the database
         const updatedUser = await PostMessage.findOneAndUpdate(
-            { email }, // Find the user by email
-            { userName, address, age, phone }, // Update the desired fields
+            { userName }, // Find the user by email
+            { email, address, age, phone }, // Update the desired fields
             { new: true }
         );
 

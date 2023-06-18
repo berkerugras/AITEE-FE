@@ -21,12 +21,12 @@ const ProfilePage = () => {
 
 
   const handleSaveChanges = () => {
-    const email = JSON.parse(localStorage.getItem("userData")).email;
+    const userName = JSON.parse(localStorage.getItem("userData")).userName;
     form.validateFields().then((values) => {
       // Include the email in the request body
       const requestBody = {
         ...values,
-        email: email
+        userName: userName
       };
   
       // Save the updated user information to the database using a PUT request
@@ -39,8 +39,8 @@ const ProfilePage = () => {
           console.error(error);
         });
         localStorage.setItem("userData", JSON.stringify({
-          ...JSON.parse(localStorage.getItem("userData")),
-          userName: values.userName,
+          ...JSON.parse(localStorage.getItem("userData")),          
+          email: values.email,
           address: values.address,
           age: values.age,
           phone: values.phone
@@ -74,6 +74,7 @@ const ProfilePage = () => {
                 form={form}
                 initialValues={{                 
                   userName: JSON.parse(localStorage.getItem("userData")).userName,
+                  email: JSON.parse(localStorage.getItem("userData")).email,
                   address: JSON.parse(localStorage.getItem("userData")).address,
                   age: JSON.parse(localStorage.getItem("userData")).age,
                   phone: JSON.parse(localStorage.getItem("userData")).phone,
@@ -81,7 +82,10 @@ const ProfilePage = () => {
                 onFinish={handleSaveChanges}
                 layout="vertical"
               >
-                <Form.Item name="userName" label="Name">
+                <Form.Item name="userName" label="UserName">
+                  <Input disabled={true}/>
+                </Form.Item>
+                <Form.Item name="email" label="Email">
                   <Input />
                 </Form.Item>
                 <Form.Item name="address" label="Address">
@@ -108,6 +112,7 @@ const ProfilePage = () => {
             ) : (
               <div>
                 <Title level={2}>{JSON.parse(localStorage.getItem("userData")).userName}</Title>
+                <Paragraph>Email: {JSON.parse(localStorage.getItem("userData")).email}</Paragraph>
                 <Paragraph>Address: {JSON.parse(localStorage.getItem("userData")).address}</Paragraph>
                 <Paragraph>Age: {JSON.parse(localStorage.getItem("userData")).age}</Paragraph>
                 <Paragraph>Phone: {JSON.parse(localStorage.getItem("userData")).phone}</Paragraph>
