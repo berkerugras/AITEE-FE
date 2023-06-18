@@ -286,6 +286,57 @@ export const getAllTheDocumentInMarketPlace = async (req, res) => {
 };
 
 
+export const getAllOrderedProducts = async (req, res) => {
+    try {
+        const { userName, email } = req.body;
+        console.log(req.params);
+        const toBeShippedOrder = await OrderCollection.find({ userName: userName, email: email });
+
+
+        res.status(200).json(toBeShippedOrder);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Failed to retrieve order collections");
+    }
+};
+
+export const getAllOrderedMarketProducts = async (req, res) => {
+    try {
+        const { userName, email } = req.body;
+        const marketListOrder = await BuyFromMarketCollection.find({ userName: userName, email: email });
+
+        res.status(200).json(marketListOrder);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Failed to retrieve market collections");
+    }
+};
+
+export const getYourListedProducts = async (req, res) => {
+    try {
+        const { userName, email } = req.body;
+        const marketListOrder = await marketCollection.find({ userName: userName, email: email });
+
+        res.status(200).json(marketListOrder);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json("Failed to retrieve market collections");
+    }
+};
+
+
+
+// export const getAllMarketPlaceProducts = async (req, res) => {
+//     try {
+//         console.log(usersMarketDocuments);
+//         res.status(200).json(usersMarketDocuments);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json("Failed to retrieve market collections");
+//     }
+// };
+
+
 export const buyFromProduct = async (req, res) => {
     try {
         const { sellerName, userName, name, lastname, email, address, phone, price, note, product, size } = req.body;
