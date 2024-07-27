@@ -20,8 +20,5 @@ router.post('/market-product', putProductInMarket);
 router.put('/update', updateUser)
 router.post('/buy-market-product', buyFromProduct);
 
-// router.patch('/:id', updatePost);
-// router.delete('/:id', deletePost);
-// router.patch('/:id/likePost', likePost);
 
 export default router;

@@ -86,8 +86,8 @@ export default function App() {
           <Route path="/aitee" element={<Aitee />}>
             <Route index element={<Aitee />} />
           </Route>
-          <Route path="/" element={<SignupPage />}>
-            <Route index element={<SignupPage />} />
+          <Route path="/" element={<Home />}>
+            <Route index element={<Home />} />
           </Route>
           <Route path="/home" element={<Home />}>
             <Route index element={<Home />} />

@@ -27,30 +27,6 @@ const Aitee = () => {
                         </div>
                     </figcaption>
                 </figure>
-
-                <figure className="about-card">
-                    <div className="profile-image"><img src='demet.jpg' alt="profile-sample2" /></div>
-                    <figcaption>
-                        <h3>DEMET</h3>
-                        <h5>Software Engineering</h5>
-                        <div className="icons"><a href="https://github.com/dmtss/"><i className="ion-social-github"></i></a>
-                            <a href="https://www.linkedin.com/in/demet-kan-9918a4136/"><i className="ion-social-linkedin"></i></a>
-                            <a href="https://www.instagram.com/d3meet/"><i className="ion-social-instagram"></i></a>
-                        </div>
-                    </figcaption>
-                </figure>
-
-                <figure className="about-card">
-                    <div className="profile-image"><img src="ege.jfif" alt="profile-sample2" /></div>
-                    <figcaption>
-                        <h3>EGE</h3>
-                        <h5>Software & Computer Engineering</h5>
-                        <div className="icons"><a href="https://github.com/egesevinc/"><i className="ion-social-github"></i></a>
-                            <a href="https://www.linkedin.com/in/egesevincc"><i className="ion-social-linkedin"></i></a>
-                            <a href="https://www.instagram.com/egessevinc/"><i className="ion-social-instagram"></i></a>
-                        </div>
-                    </figcaption>
-                </figure>
             </div>
         </div>
     );

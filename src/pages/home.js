@@ -1,25 +1,25 @@
-import React from 'react';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { fabric } from 'fabric';
 import ThemeButtons from '../components/ThemeButtons';
 import BuyCard from '../components/BuyCard';
 import ProductButtons from '../components/ProductButtons';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Modal } from 'react-bootstrap';
-const Home = () => {
-    const location = useLocation()
+import { useLocation } from 'react-router-dom';
+import { Slider } from 'antd';
 
+const Home = () => {
+    const location = useLocation();
 
     const [imageUrl, setImageUrl] = useState(null);
     const [hovered, setHovered] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(null);
-    const [canvasObj, setCanvas] = useState(null);
+    const [canvasObj, setCanvasObj] = useState(null);
     const themeRef = useRef();
     const [canvasImage, setCanvasImage] = useState(null);
     const [canvasURL, setCanvasURL] = useState(null);
-
     const [isImageOpen, setIsImageOpen] = useState(false);
+    const [radiusVal, setRadiusVal] = useState(100);
+    const userImageRef = useRef(null);
 
     const handleMouseEnter = () => {
         setHovered(true);
@@ -28,73 +28,48 @@ const Home = () => {
     const handleMouseLeave = () => {
         setHovered(false);
     };
+
     const handleCanvasClick = () => {
-        console.log(!isImageOpen);
         setIsImageOpen(!isImageOpen);
     };
 
-    const styleButton = {
-        display: !isFetching ? 'flex' : "none",
-        marginBottom: '2rem',
-        backgroundColor: hovered ? "#0065c4" : "#001a33",
-        padding: "1.25rem",
-        borderRadius: "1.10rem",
-        fontFamily: 'HomeFont',
-        fontSize: "32px",
-        color: "#2fedd4",
-    };
-
     async function generateImage() {
-
         setIsLoading(true);
         setImageUrl(null);
         setIsFetching(true);
 
-        if (themeRef.current.getMyState() === false) {
-            await fetch('/api/generate/rock')
-                .then(response => response.blob())
-                .then(imageBlob => {
-                    const imageUrl = URL.createObjectURL(imageBlob);
-                    setImageUrl(imageUrl);
-                    setIsFetching(false);
-
-                })
-                .catch(err => {
-                    setIsFetching(false);
-                    setIsLoading(false);
-                    console.log(err);
-                })
-        } else {
-            await fetch('/api/generate')
-                .then(response => response.blob())
-                .then(imageBlob => {
-                    console.log("1", isFetching);
-                    const imageUrl = URL.createObjectURL(imageBlob);
-                    setImageUrl(imageUrl);
-                    setIsFetching(false);
-
-                })
-                .catch(err => {
-                    setIsFetching(false);
-                    setIsLoading(false);
-                    console.log(err);
-                })
+        const endpoint = themeRef.current.getMyState() === false ? '/api/generate/rock' : '/api/generate';
+        
+        try {
+            const response = await fetch(endpoint);
+            const imageBlob = await response.blob();
+            const imageUrl = URL.createObjectURL(imageBlob);
+            setImageUrl(imageUrl);
+            setIsFetching(false);
+        } catch (err) {
+            setIsFetching(false);
+            setIsLoading(false);
         }
     }
 
     const addImgOnTshirt = () => {
         new fabric.Image.fromURL(imageUrl, img => {
             img.set({
-
                 scaleX: 0.3,
-                scaleY: 0.3
+                scaleY: 0.3,
+                clipPath: new fabric.Circle({
+                    radius: Math.min(img.width * radiusVal / 100, img.height * radiusVal / 100),
+                    originX: 'center',
+                    originY: 'center',
+                })
             });
             if (canvasObj.getObjects().length > 1) {
-                canvasObj.remove(canvasObj.item(1));
+                canvasObj.remove(userImageRef.current);
             }
             canvasObj.add(img);
             canvasObj.centerObject(img);
             canvasObj.renderAll();
+            userImageRef.current = img;
             var image = canvasObj.toDataURL("image/png");
             setCanvasURL(image);
         });
@@ -108,20 +83,10 @@ const Home = () => {
     const canvasImageRef = useCallback(node => {
         if (node !== null) {
             if (node.getMyState() !== canvasImage) {
-                if (node.getMyState() === "BT") {
-                    setCanvasImage("BT");
-                }
-                else {
-                    setCanvasImage("WH");
-                }
-            }
-            else {
-                setCanvasImage("BT");
+                setCanvasImage(node.getMyState() === "BT" ? "BT" : "WH");
             }
         }
-    }, []);;
-
-
+    }, []);
 
     useEffect(() => {
         const canvas = new fabric.Canvas("canvas", {
@@ -129,66 +94,58 @@ const Home = () => {
             height: 500
         });
 
+        const addBackgroundImage = (url, scaleX, scaleY) => {
+            new fabric.Image.fromURL(url, img => {
+                img.set({
+                    selectable: false,
+                    evented: false,
+                    scaleX,
+                    scaleY
+                });
+
+                if(userImageRef.current){
+                    canvas.add(img);
+                    canvas.add(userImageRef.current);
+                    var image = canvas.toDataURL("image/png");
+                    canvas.renderAll();
+
+                    setCanvasURL(image)
+
+                }else{
+                    canvas.add(img);
+                    var image = canvas.toDataURL("image/png");
+                    canvas.renderAll();
+
+                    setCanvasURL(image)
+
+                }
+                setCanvasObj(canvas);
+                
+            });
+        };
+
         if (canvasImage === "BT") {
-            new fabric.Image.fromURL('/black_tshirt.png', img => {
-                img.set({
-                    selectable: false,
-                    evented: false,
-                    scaleX: 0.5,
-                    scaleY: 0.5
-                });
-                canvas.add(img);
-                if (canvasObj) {
-                    new fabric.Image.fromURL(imageUrl, img => {
-                        img.set({
-
-                            scaleX: 0.3,
-                            scaleY: 0.3
-                        });
-
-                        canvas.add(img);
-                        canvas.centerObject(img);
-                        canvas.renderAll();
-                        var image = canvas.toDataURL("image/png");
-                        setCanvasURL(image);
-                    });
-
-                }
-                setCanvas(canvas);
-
-            });
+            addBackgroundImage('/black_tshirt.png', 0.5, 0.5);
         } else if (canvasImage === "WH") {
-            new fabric.Image.fromURL('/white_hoodie.png', img => {
-                img.set({
-                    selectable: false,
-                    evented: false,
-                    scaleX: 0.85,
-                    scaleY: 0.85
-                });
-                canvas.add(img);
-                if (canvasObj) {
-                    new fabric.Image.fromURL(imageUrl, img => {
-                        img.set({
-
-                            scaleX: 0.3,
-                            scaleY: 0.3
-                        });
-
-                        canvas.add(img);
-                        canvas.centerObject(img);
-                        canvas.renderAll();
-                        var image = canvas.toDataURL("image/png");
-                        setCanvasURL(image);
-                    });
-
-                }
-                setCanvas(canvas);
-
-            });
+            addBackgroundImage('/white_hoodie.png', 0.85, 0.85);
         }
-
-
     }, [canvasImage]);
+
+    useEffect(() => {
+        if (userImageRef.current) {
+            userImageRef.current.set({
+                clipPath: new fabric.Circle({
+                    radius: Math.min(userImageRef.current.width * radiusVal / 100, userImageRef.current.height * radiusVal / 100),
+                    originX: 'center',
+                    originY: 'center',
+                })
+            });
+            canvasObj.renderAll();
+            setCanvasObj(canvasObj);
+            var image = canvasObj.toDataURL("image/png");
+            setCanvasURL(image);
+        }
+    }, [radiusVal]);
 
     useEffect(() => {
         generateImage();
@@ -200,21 +157,13 @@ const Home = () => {
         }
     }, [imageUrl]);
 
-    useEffect(() => {
-        if (canvasURL !== null)
-            console.log(canvasURL);
-        // document.write('<img src="' + canvasURL + '"/>');
-
-    }, [canvasURL]);
-
-
 
     return (
         <div style={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            height: '80vh',
+            height: '65vh',
             paddingTop: '8vh',
             marginLeft: '25%',
         }}>
@@ -225,11 +174,15 @@ const Home = () => {
                 marginRight: '2rem',
             }}>
                 <ThemeButtons ref={themeRef} />
-                <canvas id="canvas" />
+                <div style={{ display: 'flex', flexDirection: 'row-reverse', marginRight: '6rem', alignItems: 'center' }}>
+                    <canvas id="canvas" />
+                    <div style={{ display: 'inline-block', height: 300, marginLeft: 70 }}>
+                        <Slider vertical defaultValue={100} onChange={(value) => { setRadiusVal(value); }} />
+                    </div>
+                </div>
                 <div style={{
                     display: 'flex',
                     gap: "1rem"
-
                 }}>
                     <button className="generate-buttons"
                         onClick={generateAndAddImage}
@@ -255,6 +208,7 @@ const Home = () => {
                 }}>
                     <ProductButtons ref={canvasImageRef}></ProductButtons>
                 </div>
+
                 <div style={{
                     display: 'flex',
                     justifyContent: 'flex-end',
@@ -288,10 +242,7 @@ const Home = () => {
                 </div>
             )}
         </div>
-
-
     );
 };
-
 
 export default Home;

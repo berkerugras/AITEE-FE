@@ -5,11 +5,8 @@ import cors from 'cors'
 import postRoutes from './posts.js'
 import cookieParser from "cookie-parser"
 import session from "express-session"
-import multer from 'multer'
-import OrderCollection from './orderModel.js'
 import path from 'path'
 import { fileURLToPath } from 'url';
-// const postRoutes = require('./routes/posts')
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,6 +42,3 @@ const PORT = process.env.PORT || 5000;
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => app.listen(PORT, () => console.log(`Server Running on Port ${PORT}`)))
     .catch((error) => console.log(error.message))
-
-
-//mongoose.set('useFindAndModify',false);
