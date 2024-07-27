@@ -44,6 +44,7 @@ const Home = () => {
             const response = await fetch(endpoint);
             const imageBlob = await response.blob();
             const imageUrl = URL.createObjectURL(imageBlob);
+            console.log("config changed");
             setImageUrl(imageUrl);
             setIsFetching(false);
         } catch (err) {
