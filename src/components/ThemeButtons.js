@@ -47,7 +47,6 @@ const ThemeButtons = React.forwardRef((props, ref) => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      <div className='main-text'>Choose a Theme</div>
       <button
         style={styleArtButton}
         className='generate-buttons'
